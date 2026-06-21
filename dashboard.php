@@ -14,9 +14,9 @@ if(isset($_SESSION['usuario_sesion']))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Bootstrap 5</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRI4lkxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="css/mystyle.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </head>
@@ -48,10 +48,14 @@ if(isset($_SESSION['usuario_sesion']))
                         <strong><?php echo $_SESSION['usuario_sesion'];?></strong><br>
                         <small class="text-muted"><?php echo $_SESSION['nombre_perfil'];?></small>
                     </div>
-                    <?php // solo el administrador puede editar usuarios ?>
+                    <?php // Solo el administrador puede editar usuarios ?>
                     <?php if ($_SESSION['nombre_perfil'] === 'Administrador'): ?>
-                    <h2>Gestión de Usuarios</h2>
-                    <a href="backend/frm_usuarios.php" class="btn btn-primary">Administrar usuarios</a>
+                        <a href="backend/frm_usuarios.php" class="btn btn-primary">Administrar usuarios</a>
+                    <?php endif; ?>
+
+                    <?php // Propietario y Gestor pueden ver sus propiedades ?>
+                    <?php if ($_SESSION['nombre_perfil'] === 'Propietario' || $_SESSION['nombre_perfil'] === 'Gestor Inmobiliario' || $_SESSION['nombre_perfil'] === 'Administrador'): ?>
+                        <a href="mis-propiedades.php" class="btn btn-success">Mis Propiedades</a>
                     <?php endif; ?>
 
                     <a href="backend/logout.php" class="btn btn-danger btn-sm">Cerrar sesión</a>
@@ -59,47 +63,57 @@ if(isset($_SESSION['usuario_sesion']))
             </div>
 
             <div class="table-container">
-                <h4 class="mb-3">Últimos registros</h4>
+                <?php if ($_SESSION['nombre_perfil'] === 'Administrador'): ?>
+                    <h4 class="mb-3">Últimos registros</h4>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            $sql="select * from usuarios";
-                            $result=mysqli_query(conectar(),$sql);
-                            $contar=mysqli_num_rows($result);
-                            while($datos=mysqli_fetch_array($result))
-                            {
-                        ?>
-                            <tr>
-                                <td><?php echo $datos['id'];?></td>
-                                <td><?php echo $datos['nombre'];?></td>
-                                <td><?php echo $datos['email'];?></td>
-                                <td><?php if($datos['estado']=='1'){?>
-                                    <span class="badge bg-success">Activo</span>
-                                    <?php
-                                    }else{
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                                $sql="select * from usuarios";
+                                $result=mysqli_query(conectar(),$sql);
+                                $contar=mysqli_num_rows($result);
+                                while($datos=mysqli_fetch_array($result))
+                                {
+                            ?>
+                                <tr>
+                                    <td><?php echo $datos['id'];?></td>
+                                    <td><?php echo $datos['nombre'];?></td>
+                                    <td><?php echo $datos['email'];?></td>
+                                    <td><?php if($datos['estado']=='1'){?>
+                                        <span class="badge bg-success">Activo</span>
+                                        <?php
+                                        }else{
+                                            ?>
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        <?php
+                                        }
                                         ?>
-                                        <span class="badge bg-danger">Inactivo</span>
-                                    <?php
-                                    }
-                                    ?>
-                                </td>
-                            </tr>
-                        <?php
-                            }
-                        ?>  
-                        </tbody>
-                    </table>
-                </div>
+                                    </td>
+                                </tr>
+                            <?php
+                                }
+                            ?>  
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info">
+                        <h4>¡Bienvenido/a, <?php echo htmlspecialchars($_SESSION['usuario_sesion']); ?>!</h4>
+                        <p>En esta sección podrás gestionar tus propiedades.</p>
+                        <p style="margin-top: 15px;">
+                            <a href="mis-propiedades.php" class="btn btn-primary">Mis Propiedades</a>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
 
         </div>

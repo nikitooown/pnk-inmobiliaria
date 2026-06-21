@@ -6,6 +6,7 @@
   <title>Registro - PNK Inmobiliaria</title>
   <link rel="stylesheet" href="css/mystyle.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .tab-registro {
       max-width: 700px;
@@ -356,6 +357,40 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+<script>
+  // Mostrar errores de certificado con SweetAlert2
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.has('error')) {
+    const errorCode = urlParams.get('error');
+    let errorMessage = 'Ocurrió un error durante el registro.';
+    
+    // Mapear códigos de error específicos para certificado
+    if (errorCode === 'cert_1') {
+      errorMessage = 'Error al subir el archivo. Por favor, intenta nuevamente.';
+    } else if (errorCode === 'cert_2') {
+      errorMessage = 'El archivo es demasiado grande. El tamaño máximo permitido es 5MB.';
+    } else if (errorCode === 'cert_3') {
+      errorMessage = 'Formato de archivo no permitido. Solo se aceptan: PDF, JPG, JPEG, PNG.';
+    } else if (errorCode === 'cert_4') {
+      errorMessage = 'Error al guardar el archivo. Por favor, intenta nuevamente.';
+    } else if (errorCode === 'db_error') {
+      // Error de base de datos (duplicado, etc)
+      errorMessage = '<?php echo isset($_SESSION['error_registro']) ? addslashes($_SESSION['error_registro']) : 'Error al procesar tu registro. Intenta nuevamente.'; ?>';
+      <?php if (isset($_SESSION['error_registro'])) unset($_SESSION['error_registro']); ?>
+    }
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Error en el Registro',
+      text: errorMessage,
+      confirmButtonText: 'Aceptar'
+    }).then(() => {
+      // Limpiar URL después de mostrar el mensaje
+      window.history.replaceState({}, document.title, 'registro.php');
+    });
+  }
+</script>
 
 </body>
 </html>

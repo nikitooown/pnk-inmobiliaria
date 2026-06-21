@@ -402,6 +402,9 @@ async function abrirEditar(id) {
     modal.show();
 }
 
+// ── NUEVA VERSIÓN: initFormCrearPropiedad ──────────────────────────────────
+// Elimina 'ciudad', incorpora 'sector', Optional Chaining, SweetAlert2
+
 function initFormCrearPropiedad() {
     const form = document.getElementById('formCrearPropiedad');
     if (!form) return;

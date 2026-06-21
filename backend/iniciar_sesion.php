@@ -42,8 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Validar estado (normalizado)
-    if (trim(strtolower($datos['estado'])) !== 'activo') {
+    // Validar estado (TINYINT: 1 = activo, 0 = inactivo)
+    if ((int)$datos['estado'] !== 1) {
         header("Location: ../iniciosesion.php?error=4");
         exit();
     }

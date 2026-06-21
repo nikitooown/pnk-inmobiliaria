@@ -14,8 +14,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Detectar qué formulario se envió
     if (isset($_POST['registrar_propietario'])) {
         $idperfil = 2; // Propietario
+        $certificado = NULL;
     } elseif (isset($_POST['registrar_gestor'])) {
         $idperfil = 3; // Gestor Inmobiliario
+        
+        // Manejo de certificado para Gestores
+        $certificado = NULL;
+        
+        // Crear carpeta de certificados si no existe
+        $carpeta_certificados = __DIR__ . "/../uploads/certificados/";
+        if (!is_dir($carpeta_certificados)) {
+            mkdir($carpeta_certificados, 0777, true);
+        }
+        
+        // Verificar si se subió un archivo de certificado
+        if (isset($_FILES['certificado']) && $_FILES['certificado']['error'] !== UPLOAD_ERR_NO_FILE) {
+            $archivo = $_FILES['certificado'];
+            
+            // Validar que no hay error en la subida
+            if ($archivo['error'] !== UPLOAD_ERR_OK) {
+                $error_msg = "Error al subir el archivo.";
+                if ($archivo['error'] === UPLOAD_ERR_INI_SIZE || $archivo['error'] === UPLOAD_ERR_FORM_SIZE) {
+                    $error_msg = "El archivo es demasiado grande (máximo 5MB).";
+                }
+                // Guardar error en sesión para redirigir
+                session_start();
+                $_SESSION['error_certificado'] = $error_msg;
+                header("Location: ../registro.php?error=cert_1");
+                exit();
+            }
+            
+            // Obtener información del archivo
+            $nombre_archivo = $archivo['name'];
+            $tmp_name = $archivo['tmp_name'];
+            $tamaño = $archivo['size'];
+            
+            // Validar tamaño máximo (5MB = 5242880 bytes)
+            if ($tamaño > 5242880) {
+                session_start();
+                $_SESSION['error_certificado'] = "El archivo es demasiado grande (máximo 5MB).";
+                header("Location: ../registro.php?error=cert_2");
+                exit();
+            }
+            
+            // Validar extensión
+            $extension = strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
+            $extensiones_permitidas = ['pdf', 'jpg', 'jpeg', 'png'];
+            
+            if (!in_array($extension, $extensiones_permitidas)) {
+                session_start();
+                $_SESSION['error_certificado'] = "Formato no permitido. Solo se aceptan: PDF, JPG, JPEG, PNG.";
+                header("Location: ../registro.php?error=cert_3");
+                exit();
+            }
+            
+            // Generar nombre único para el archivo
+            $nombre_unico = uniqid() . "." . $extension;
+            $ruta_destino = $carpeta_certificados . $nombre_unico;
+            
+            // Mover archivo subido
+            if (move_uploaded_file($tmp_name, $ruta_destino)) {
+                // Guardar ruta relativa en la base de datos
+                $certificado = "uploads/certificados/" . $nombre_unico;
+            } else {
+                session_start();
+                $_SESSION['error_certificado'] = "Error al guardar el archivo.";
+                header("Location: ../registro.php?error=cert_4");
+                exit();
+            }
+        }
     } else {
         die("Error: formulario no reconocido.");
     }
@@ -25,22 +92,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Hash de la contraseña
     $clave_hash = password_hash($clave, PASSWORD_DEFAULT);
 
+    // Estado inicial: 0 = inactivo (requiere activación por administrador)
+    $estado = 0;
+
     // Insertar usuario como inactivo usando prepared statement
     $sql = "INSERT INTO usuarios 
-            (rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave, estado, fecha_hora, foto, idperfil) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'inactivo', NOW(), 'default.png', ?)";
+            (rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave, estado, fecha_hora, foto, idperfil, certificado) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'default.png', ?, ?)";
 
     $stmt = mysqli_prepare($conexion, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssssssi", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $idperfil);
-
-    if (mysqli_stmt_execute($stmt)) {
-        header("Location: ../iniciosesion.php");
-        exit();
+    // Tipos: s=string, i=int, null para NULL
+    if ($certificado === NULL) {
+        mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
     } else {
-        echo "Error: " . mysqli_error($conexion);
+        mysqli_stmt_bind_param($stmt, "ssssssssiiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
     }
 
-    mysqli_stmt_close($stmt);
-    mysqli_close($conexion);
+    try {
+        mysqli_stmt_execute($stmt);
+        session_start();
+        $_SESSION['success_registro'] = true;
+        header("Location: ../iniciosesion.php");
+        exit();
+    } catch (mysqli_sql_exception $e) {
+        $errorCode = $e->getCode();
+        $errorMsg = 'Error al registrarte. Por favor intenta más tarde.';
+        
+        if ($errorCode == 1062) {
+            // Error de duplicado: RUT o email ya existen
+            if (stripos($e->getMessage(), 'rut') !== false) {
+                $errorMsg = 'El RUT ingresado ya está registrado.';
+            } else {
+                $errorMsg = 'El email ingresado ya está registrado.';
+            }
+        }
+        
+        error_log('Error en registro de usuario: ' . $e->getMessage());
+        
+        session_start();
+        $_SESSION['error_registro'] = $errorMsg;
+        header("Location: ../registro.php?error=db_error");
+        exit();
+    } finally {
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
 }
 ?>

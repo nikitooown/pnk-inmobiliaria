@@ -6,6 +6,7 @@
   <title>Contacto - PNK Inmobiliaria</title>
   <link rel="stylesheet" href="css/mystyle.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -43,5 +44,53 @@
   </form>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Detectar parámetros de éxito o error y mostrar mensajes SweetAlert2
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('exito')) {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Mensaje enviado!',
+        text: 'Tu mensaje ha sido recibido correctamente. Nos pondremos en contacto pronto.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        // Limpiar URL después de mostrar el mensaje
+        window.history.replaceState({}, document.title, 'contacto.php');
+      });
+    } else if (urlParams.has('error')) {
+      const errorCode = urlParams.get('error');
+      let errorMessage = 'Ocurrió un error al enviar tu mensaje.';
+      
+      switch(errorCode) {
+        case '1':
+          errorMessage = 'Por favor, ingresa tu nombre.';
+          break;
+        case '2':
+          errorMessage = 'Por favor, ingresa tu correo electrónico.';
+          break;
+        case '3':
+          errorMessage = 'Por favor, ingresa tu mensaje.';
+          break;
+        case '4':
+          errorMessage = 'El correo electrónico no es válido. Verifica el formato.';
+          break;
+        case '5':
+          errorMessage = 'Error en el servidor. Por favor, intenta más tarde.';
+          break;
+      }
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage,
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        // Limpiar URL después de mostrar el mensaje
+        window.history.replaceState({}, document.title, 'contacto.php');
+      });
+    }
+  </script>
 </body>
 </html>

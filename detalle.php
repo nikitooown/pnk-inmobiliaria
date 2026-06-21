@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/mystyle.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .detalle-header {
       background-color: #dedbc1;
@@ -49,6 +50,11 @@
       font-weight: bold;
       color: #ff4500;
     }
+    .detalle-info .precio-uf {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
     .icono-caracteristica {
       font-size: 1.8rem;
       color: #b0a78f;
@@ -79,6 +85,20 @@
       flex-wrap: wrap;
       margin-bottom: 25px;
     }
+    .equipamiento-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    .equipamiento-item {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
     .detalle-ubicacion {
       display: flex;
       align-items: center;
@@ -86,6 +106,23 @@
       color: #666;
       font-size: 1.1rem;
       margin-bottom: 20px;
+    }
+    .btn-visita {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #ff4500;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background-color 0.3s;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .btn-visita:hover {
+      background-color: #e03d00;
+      color: white;
     }
     .btn-volver {
       display: inline-block;
@@ -110,6 +147,18 @@
       color: #999;
       font-size: 1.2rem;
     }
+    .mapa-container {
+      max-width: 800px;
+      margin: 0 auto 40px auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+    .mapa-container iframe {
+      width: 100%;
+      height: 400px;
+      border: 0;
+    }
     @media (max-width: 768px) {
       .carousel-detalle .carousel-item img {
         height: 280px;
@@ -120,6 +169,9 @@
       .detalle-info {
         margin: 0 15px 30px 15px;
         padding: 20px;
+      }
+      .mapa-container iframe {
+        height: 280px;
       }
     }
   </style>
@@ -181,6 +233,8 @@
   mysqli_stmt_close($stmt_fotos);
 
   $precio_formateado = number_format($propiedad['precio'], 0, ',', '.');
+  $uf_valor = $propiedad['uf'] ?? 0;
+  $uf_formateado = number_format($uf_valor, 2, ',', '.');
   $total_fotos = count($fotografias);
   ?>
 
@@ -190,6 +244,9 @@
       <p class="detalle-ubicacion" style="justify-content:center;">
         <i class="bi bi-geo-alt-fill"></i>
         <?= htmlspecialchars($propiedad['comuna']) ?>, <?= htmlspecialchars($propiedad['provincia']) ?>
+        <?php if (!empty($propiedad['sector'])): ?>
+          — Sector <?= htmlspecialchars($propiedad['sector']) ?>
+        <?php endif; ?>
         <?php if (!empty($propiedad['direccion'])): ?>
           — <?= htmlspecialchars($propiedad['direccion']) ?>
         <?php endif; ?>
@@ -244,32 +301,35 @@
     <!-- INFORMACIÓN DE LA PROPIEDAD -->
     <div class="detalle-info">
 
-      <!-- Características con Bootstrap Icons -->
+      <!-- Características con iconos -->
       <div class="caracteristicas-grid">
         <div class="caracteristica-item">
-          <div class="icono-caracteristica"><i class="bi bi-door-open"></i></div>
+          <div class="icono-caracteristica">🛏️</div>
           <div class="valor"><?= (int) $propiedad['habitaciones'] ?></div>
-          <div class="etiqueta">Habitaciones</div>
+          <div class="etiqueta">Dormitorios</div>
         </div>
         <div class="caracteristica-item">
-          <div class="icono-caracteristica"><i class="bi bi-droplet"></i></div>
+          <div class="icono-caracteristica">🛁</div>
           <div class="valor"><?= (int) $propiedad['banos'] ?></div>
           <div class="etiqueta">Baños</div>
         </div>
         <div class="caracteristica-item">
-          <div class="icono-caracteristica"><i class="bi bi-arrows-angle-expand"></i></div>
-          <div class="valor"><?= (int) $propiedad['m2'] ?></div>
-          <div class="etiqueta">m²</div>
+          <div class="icono-caracteristica">📐</div>
+          <div class="valor"><?= (int) ($propiedad['m2_terreno'] ?? 0) ?></div>
+          <div class="etiqueta">m² Terreno</div>
         </div>
         <div class="caracteristica-item">
-          <div class="icono-caracteristica"><i class="bi bi-house-door"></i></div>
-          <div class="valor"><?= htmlspecialchars($propiedad['tipo']) ?></div>
-          <div class="etiqueta">Tipo</div>
+          <div class="icono-caracteristica">🏠</div>
+          <div class="valor"><?= (int) ($propiedad['m2_construido'] ?? 0) ?></div>
+          <div class="etiqueta">m² Construidos</div>
         </div>
       </div>
 
-      <!-- Precio -->
-      <p class="precio-grande">$<?= $precio_formateado ?> UF</p>
+      <!-- Precios -->
+      <p class="precio-grande">$<?= $precio_formateado ?></p>
+      <?php if ($uf_valor > 0): ?>
+        <p class="precio-uf">UF <?= $uf_formateado ?></p>
+      <?php endif; ?>
 
       <!-- Descripción -->
       <?php if (!empty($propiedad['descripcion'])): ?>
@@ -278,11 +338,72 @@
         </div>
       <?php endif; ?>
 
-      <!-- Botón volver -->
-      <a href="catalogo.php" class="btn-volver">← Volver al catálogo</a>
+      <!-- Equipamiento (solo mostrar los que tengan valor 1) -->
+      <?php
+      $equipamientos = [];
+      if (!empty($propiedad['bodega'])) $equipamientos[] = '📦 Bodega';
+      if (!empty($propiedad['piscina'])) $equipamientos[] = '🏊 Piscina';
+      if (!empty($propiedad['estacionamiento'])) $equipamientos[] = '🚗 Estacionamiento';
+      if (!empty($propiedad['logia'])) $equipamientos[] = '🧺 Logia';
+      if (!empty($propiedad['cocina_amoblada'])) $equipamientos[] = '🍳 Cocina Amoblada';
+      if (!empty($propiedad['antejardin'])) $equipamientos[] = '🌿 Antejardín';
+      if (!empty($propiedad['patio_trasero'])) $equipamientos[] = '🌳 Patio Trasero';
+      ?>
+      <?php if (!empty($equipamientos)): ?>
+        <h5>Equipamiento</h5>
+        <div class="equipamiento-list">
+          <?php foreach ($equipamientos as $item): ?>
+            <span class="equipamiento-item"><?= $item ?></span>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <!-- Botones de acción -->
+      <div>
+        <button class="btn-visita" onclick="solicitarVisita()">📅 Solicitar una Visita</button>
+        <a href="catalogo.php" class="btn-volver">← Volver al catálogo</a>
+      </div>
+    </div>
+
+    <!-- Google Maps iframe -->
+    <div class="mapa-container">
+      <?php
+      $direccion_mapa = '';
+      if (!empty($propiedad['latitud']) && !empty($propiedad['longitud'])) {
+          $direccion_mapa = $propiedad['latitud'] . ',' . $propiedad['longitud'];
+      } elseif (!empty($propiedad['direccion'])) {
+          $direccion_mapa = urlencode($propiedad['direccion'] . ', ' . $propiedad['comuna'] . ', Chile');
+      } else {
+          $direccion_mapa = urlencode($propiedad['comuna'] . ', Chile');
+      }
+
+      if (!empty($propiedad['latitud']) && !empty($propiedad['longitud'])):
+      ?>
+        <iframe 
+          src="https://maps.google.com/maps?q=<?= $direccion_mapa ?>&output=embed" 
+          allowfullscreen loading="lazy">
+        </iframe>
+      <?php else: ?>
+        <iframe 
+          src="https://maps.google.com/maps?q=<?= $direccion_mapa ?>&output=embed" 
+          allowfullscreen loading="lazy">
+        </iframe>
+      <?php endif; ?>
     </div>
 
   </div>
+
+  <script>
+    function solicitarVisita() {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Solicitud Enviada!',
+        text: 'Hemos recibido tu solicitud de visita. Un gestor se pondrá en contacto contigo a la brevedad.',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#ff4500'
+      });
+    }
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
