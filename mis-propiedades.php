@@ -39,7 +39,7 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                 </div>
                 <div>
                     <a href="dashboard.php" class="btn btn-secondary">Volver al Dashboard</a>
-                    <a href="backend/logout.php" class="btn btn-danger">Cerrar sesión</a>
+                    <a href="backend/logout.php" class="btn btn-pnk">Cerrar sesión</a>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
 
             <!-- Formulario de Creación -->
             <div class="card mb-5">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-pnk">
                     <h5 class="mb-0">Crear Nueva Propiedad</h5>
                 </div>
                 <div class="card-body">
@@ -126,14 +126,14 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                             <small class="text-muted">Formatos permitidos: JPG, JPEG, PNG, WEBP</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Crear Propiedad</button>
+                        <button type="submit" class="btn btn-pnk">Crear Propiedad</button>
                     </form>
                 </div>
             </div>
 
             <!-- Lista de Propiedades -->
             <div class="card">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-pnk">
                     <h5 class="mb-0">Tus Propiedades Publicadas</h5>
                 </div>
                 <div class="card-body">
@@ -154,8 +154,8 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                 <h5 class="modal-title">Editar Propiedad</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <form id="formEditarPropiedad" enctype="multipart/form-data">
+            <form id="formEditarPropiedad" enctype="multipart/form-data">
+                <div class="modal-body">
                     <input type="hidden" id="editId" name="editId">
 
                     <div class="row">
@@ -228,12 +228,12 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                             <option value="Vendida">Vendida</option>
                         </select>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-pnk" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-pnk">Guardar Cambios</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -241,25 +241,6 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
 <!-- Scripts -->
 <script src="validar.js"></script>
 <script>
-    // Función para guardar la edición
-    function guardarEdicion() {
-        const formData = new FormData(document.getElementById('formEditarPropiedad'));
-        formData.append('accion', 'editar');
-
-        fetch('backend/propiedades_controller.php', { method: 'POST', body: formData })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire('Éxito', 'Propiedad actualizada correctamente.', 'success');
-                    cargarPropiedades();
-                    bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
-                } else {
-                    Swal.fire('Error', data.message || 'Error al actualizar la propiedad.', 'error');
-                }
-            })
-            .catch(err => Swal.fire('Error', 'Error de conexión.', 'error'));
-    }
-
     // Función para eliminar con SweetAlert2
     window.confirmarEliminar = async function(id) {
         const result = await Swal.fire({
@@ -290,5 +271,8 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
     };
 </script>
 
+<footer class="bg-pnk text-center py-4 mt-5 border-top">
+  <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
+</footer>
 </body>
 </html>

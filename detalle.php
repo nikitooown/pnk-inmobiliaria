@@ -48,7 +48,7 @@
     .detalle-info .precio-grande {
       font-size: 1.8rem;
       font-weight: bold;
-      color: #ff4500;
+      color: #e02a8a;
     }
     .detalle-info .precio-uf {
       font-size: 1.2rem;
@@ -92,8 +92,9 @@
       margin-bottom: 25px;
     }
     .equipamiento-item {
-      background: #e8f5e9;
-      color: #2e7d32;
+      background: #efeee4;
+      color: #3c3c3c;
+      border: 1px solid #b0a78f;
       padding: 8px 15px;
       border-radius: 20px;
       font-size: 0.95rem;
@@ -110,7 +111,7 @@
     .btn-visita {
       display: inline-block;
       padding: 12px 30px;
-      background-color: #ff4500;
+      background-color: #e02a8a;
       color: white;
       border: none;
       border-radius: 8px;
@@ -121,7 +122,7 @@
       margin-right: 10px;
     }
     .btn-visita:hover {
-      background-color: #e03d00;
+      background-color: #c02375;
       color: white;
     }
     .btn-volver {
@@ -360,7 +361,7 @@
 
       <!-- Botones de acción -->
       <div>
-        <button class="btn-visita" onclick="solicitarVisita()">📅 Solicitar una Visita</button>
+        <button class="btn-visita" onclick="solicitarVisita(<?= (int) $propiedad['id'] ?>)">📅 Solicitar una Visita</button>
         <a href="catalogo.php" class="btn-volver">← Volver al catálogo</a>
       </div>
     </div>
@@ -394,17 +395,58 @@
   </div>
 
   <script>
-    function solicitarVisita() {
+    function solicitarVisita(idPropiedad) {
       Swal.fire({
-        icon: 'success',
-        title: '¡Solicitud Enviada!',
-        text: 'Hemos recibido tu solicitud de visita. Un gestor se pondrá en contacto contigo a la brevedad.',
-        confirmButtonText: 'Entendido',
-        confirmButtonColor: '#ff4500'
+        title: 'Solicitar visita',
+        html: '<input id="swal-nombre" class="swal2-input" placeholder="Nombre completo">' +
+              '<input id="swal-telefono" class="swal2-input" placeholder="Teléfono (+569XXXXXXXX)">',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Enviar solicitud',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#e02a8a',
+        preConfirm: () => {
+          const nombre = document.getElementById('swal-nombre').value.trim();
+          const telefono = document.getElementById('swal-telefono').value.trim();
+          if (!nombre || !telefono) {
+            Swal.showValidationMessage('Por favor completa nombre y teléfono.');
+            return false;
+          }
+          return { nombre, telefono };
+        }
+      }).then((result) => {
+        if (!result.isConfirmed) return;
+
+        const formData = new FormData();
+        formData.append('id_propiedad', idPropiedad);
+        formData.append('nombre', result.value.nombre);
+        formData.append('telefono', result.value.telefono);
+
+        fetch('backend/guardar_visita.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          Swal.fire({
+            icon: data.success ? 'success' : 'error',
+            title: data.success ? '¡Solicitud Enviada!' : 'Error',
+            text: data.message,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#e02a8a'
+          });
+        })
+        .catch(() => {
+          Swal.fire('Error', 'No se pudo enviar la solicitud. Intenta nuevamente.', 'error');
+        });
       });
     }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<footer class="bg-pnk text-center py-4 mt-5 border-top">
+  <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
+</footer>
 </body>
 </html>

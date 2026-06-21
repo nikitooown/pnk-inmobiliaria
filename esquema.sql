@@ -76,6 +76,16 @@ CREATE TABLE mensajes_contacto (
     fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabla: visitas
+-- Almacena las solicitudes de visita a propiedades
+CREATE TABLE IF NOT EXISTS visitas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_propiedad INT NOT NULL,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20),
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ============================================
 -- DATOS SEMILLA (Seed data)
 -- ============================================

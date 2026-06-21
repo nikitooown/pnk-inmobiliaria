@@ -47,7 +47,7 @@
   </script>
   <?php endif; ?>
 
-    <form action="backend/iniciar_sesion.php" method="POST">
+    <form action="backend/iniciar_sesion.php" method="POST" id="formLogin">
 
         <h1>Iniciar Sesión</h1>
         <hr>

@@ -290,7 +290,7 @@ function initFormLogin() {
         e.preventDefault();
         limpiarAlertas('alertasLogin');
 
-        const correo = form.querySelector('[name="correo"]');
+        const correo = form.querySelector('[name="correo"], [name="email"], #correo, #email');
         const psw    = form.querySelector('[name="psw"]');
         let valido = true;
 
@@ -392,7 +392,7 @@ async function abrirEditar(id) {
     document.getElementById('editTipo').value     = p.tipo;
     document.getElementById('editPrecio').value   = p.precio;
     document.getElementById('editDireccion').value = p.direccion;
-    document.getElementById('editCiudad').value   = p.ciudad;
+    document.getElementById('editComuna').value   = p.comuna;
     document.getElementById('editSuperficie').value = p.superficie || '';
     document.getElementById('editHabitaciones').value = p.habitaciones;
     document.getElementById('editBanos').value    = p.banos;

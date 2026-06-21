@@ -4,15 +4,22 @@ include ("../config/setup.php");
 
 // Validación: solo Administrador puede acceder
 if ($_SESSION['nombre_perfil'] !== 'Administrador') {
-    header("Location: error.html");
+    echo json_encode(['success' => false, 'mensaje' => 'No autorizado.']);
+    exit();
+}
+
+// Solo aceptar POST
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode(['success' => false, 'mensaje' => 'Método no permitido.']);
     exit();
 }
 
 switch($_POST['accion']){
-    case "guardar": insertar(); break;
-    case "modificar": modificar(); break;
-    case "eliminar": eliminar(); break;
-    case "cancelar": cancelar(); break;
+    case "insertar": echo json_encode(insertar()); exit();
+    case "modificar": echo json_encode(modificar()); exit();
+    case "eliminar": echo json_encode(eliminar()); exit();
+    case "cancelar": echo json_encode(['success' => true, 'mensaje' => 'Operación cancelada.']); exit();
+    default: echo json_encode(['success' => false, 'mensaje' => 'Acción no reconocida.']); exit();
 }
 
 function insertar() {
@@ -35,45 +42,19 @@ function insertar() {
         mysqli_stmt_bind_param($stmt, "ssssssi", $rut, $nombre, $apellido, $usuario, $clave_hash, $estado, $idperfil);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        
-        // SweetAlert2 feedback en lugar de header directo
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Usuario guardado',
-                text: 'El usuario se ha registrado correctamente. Contraseña inicial: RUT del usuario.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => true, 'mensaje' => 'Usuario guardado correctamente. Contraseña inicial: RUT del usuario.'];
     } catch (mysqli_sql_exception $e) {
-        // Manejo de errores controlado
         $errorCode = $e->getCode();
         $errorMessage = 'Error al crear el usuario.';
         
         if ($errorCode == 1062) {
-            // Código MySQL para entrada duplicada
             $errorMessage = 'Ya existe un usuario con ese RUT o correo electrónico.';
         }
         
-        // Log del error técnico para debugging
         error_log('Error en insertar usuario: ' . $e->getMessage());
-        
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'warning',
-                title: 'No se pudo crear el usuario',
-                text: '" . addslashes($errorMessage) . "',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => false, 'mensaje' => $errorMessage];
     }
 }
 
@@ -96,19 +77,8 @@ function modificar() {
         mysqli_stmt_bind_param($stmt, "sssssii", $rut, $nombre, $apellido, $usuario, $estado, $idperfil, $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Usuario modificado',
-                text: 'Los datos del usuario se actualizaron correctamente.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => true, 'mensaje' => 'Usuario modificado correctamente.'];
     } catch (mysqli_sql_exception $e) {
         $errorCode = $e->getCode();
         $errorMessage = 'Error al modificar el usuario.';
@@ -118,19 +88,8 @@ function modificar() {
         }
         
         error_log('Error en modificar usuario: ' . $e->getMessage());
-        
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'warning',
-                title: 'No se pudo modificar el usuario',
-                text: '" . addslashes($errorMessage) . "',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => false, 'mensaje' => $errorMessage];
     }
 }
 
@@ -144,39 +103,13 @@ function eliminar() {
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
-        
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Usuario eliminado',
-                text: 'El usuario fue eliminado del sistema.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => true, 'mensaje' => 'Usuario eliminado correctamente.'];
     } catch (mysqli_sql_exception $e) {
         $errorMessage = 'Error al eliminar el usuario. Intenta nuevamente.';
         error_log('Error en eliminar usuario: ' . $e->getMessage());
-        
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'No se pudo eliminar el usuario',
-                text: '" . addslashes($errorMessage) . "',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.location.href = 'frm_usuarios.php';
-            });
-        </script>";
-        exit();
+        mysqli_close($conexion);
+        return ['success' => false, 'mensaje' => $errorMessage];
     }
-}
-
-function cancelar() {   
-    header("Location: frm_usuarios.php");
 }
 ?>

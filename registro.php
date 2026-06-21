@@ -138,7 +138,7 @@
 <p>
   <label>
     <input type="checkbox" name="terminos" required>
-    Acepto los <a href="#" style="color:dodgerblue">Términos y condiciones</a>.
+    Acepto los <a href="#" style="color:#3c3c3c">Términos y condiciones</a>.
   </label>
 </p>
 
@@ -210,7 +210,7 @@
 <p>
   <label>
     <input type="checkbox" name="terminos" required>
-    Acepto los <a href="#" style="color:dodgerblue">Términos y condiciones</a>.
+    Acepto los <a href="#" style="color:#3c3c3c">Términos y condiciones</a>.
   </label>
 </p>
     <div class="clearfix">
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function() {
       errorMessage = 'Error al guardar el archivo. Por favor, intenta nuevamente.';
     } else if (errorCode === 'db_error') {
       // Error de base de datos (duplicado, etc)
-      errorMessage = '<?php echo isset($_SESSION['error_registro']) ? addslashes($_SESSION['error_registro']) : 'Error al procesar tu registro. Intenta nuevamente.'; ?>';
+      errorMessage = <?php echo json_encode($_SESSION['error_registro'] ?? 'Error al procesar tu registro. Intenta nuevamente.'); ?>;
       <?php if (isset($_SESSION['error_registro'])) unset($_SESSION['error_registro']); ?>
     }
     

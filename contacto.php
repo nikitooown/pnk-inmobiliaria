@@ -23,7 +23,7 @@
     </ul>
   </header>
 
-  <form action="backend/enviar_contacto.php" method="POST" style="max-width: 600px;">
+  <form id="formContacto" style="max-width: 600px;">
     <h1>Contacto</h1>
     <p>Estamos para ayudarte. Contáctanos a través del siguiente formulario.</p>
     <hr>
@@ -46,51 +46,51 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // Detectar parámetros de éxito o error y mostrar mensajes SweetAlert2
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.has('exito')) {
-      Swal.fire({
-        icon: 'success',
-        title: '¡Mensaje enviado!',
-        text: 'Tu mensaje ha sido recibido correctamente. Nos pondremos en contacto pronto.',
-        confirmButtonText: 'Aceptar'
-      }).then(() => {
-        // Limpiar URL después de mostrar el mensaje
-        window.history.replaceState({}, document.title, 'contacto.php');
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('formContacto');
+      if (!form) return;
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = form.querySelector('[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        try {
+          const formData = new FormData(form);
+          const res = await fetch('backend/enviar_contacto.php', { method: 'POST', body: formData });
+          const data = await res.json();
+
+          if (data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: '¡Mensaje enviado!',
+              text: data.mensaje || 'Tu mensaje ha sido recibido correctamente. Nos pondremos en contacto pronto.',
+              confirmButtonText: 'Aceptar'
+            });
+            form.reset();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: data.mensaje || 'Ocurrió un error al enviar tu mensaje.',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        } catch (err) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'Ocurrió un problema al comunicarse con el servidor.',
+            confirmButtonText: 'Aceptar'
+          });
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Enviar mensaje';
+        }
       });
-    } else if (urlParams.has('error')) {
-      const errorCode = urlParams.get('error');
-      let errorMessage = 'Ocurrió un error al enviar tu mensaje.';
-      
-      switch(errorCode) {
-        case '1':
-          errorMessage = 'Por favor, ingresa tu nombre.';
-          break;
-        case '2':
-          errorMessage = 'Por favor, ingresa tu correo electrónico.';
-          break;
-        case '3':
-          errorMessage = 'Por favor, ingresa tu mensaje.';
-          break;
-        case '4':
-          errorMessage = 'El correo electrónico no es válido. Verifica el formato.';
-          break;
-        case '5':
-          errorMessage = 'Error en el servidor. Por favor, intenta más tarde.';
-          break;
-      }
-      
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: errorMessage,
-        confirmButtonText: 'Aceptar'
-      }).then(() => {
-        // Limpiar URL después de mostrar el mensaje
-        window.history.replaceState({}, document.title, 'contacto.php');
-      });
-    }
+    });
   </script>
 </body>
 </html>

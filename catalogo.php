@@ -64,7 +64,7 @@
 
     // Construir consulta SQL dinámicamente con filtros combinados
     $sql = "SELECT p.id, p.titulo, p.tipo, p.comuna, p.sector, p.precio, p.uf,
-                   (SELECT f.ruta FROM fotografias f WHERE f.id_propiedad = p.id AND f.es_principal = 1 LIMIT 1) AS foto_principal
+                  (SELECT f.ruta FROM fotografias f WHERE f.id_propiedad = p.id AND f.es_principal = 1 LIMIT 1) AS foto_principal
             FROM propiedades p
             WHERE p.estado = 'Publicada'";
 
@@ -136,5 +136,9 @@
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<footer class="bg-pnk text-center py-4 mt-5 border-top">
+  <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
+</footer>
 </body>
 </html>

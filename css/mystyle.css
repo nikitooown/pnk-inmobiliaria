@@ -502,6 +502,52 @@ form input[type="checkbox"] {
   cursor: pointer;
 }
 
+/* ==========================================
+   CLASES CORPORATIVAS PNK (Paleta oficial)
+   ========================================== */
+.bg-pnk {
+  background-color: #dedbc1 !important;
+}
+
+.btn-pnk {
+  background-color: #b0a78f !important;
+  color: #3c3c3c !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 500;
+}
+
+.btn-pnk:hover {
+  background-color: #3c3c3c !important;
+  color: #efeee4 !important;
+}
+
+.text-pnk-price {
+  color: #e02a8a !important;
+  font-weight: bold;
+}
+
+.badge-pnk {
+  background-color: #b0a78f;
+  color: #3c3c3c;
+}
+
+/* Formulario de usuarios dentro del card - eliminar caja blanca flotante */
+#frm_usu {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Asegurar que inputs ocupen 100% del ancho de su columna */
+#frm_usu .form-control,
+#frm_usu .form-select {
+  width: 100% !important;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   section form {

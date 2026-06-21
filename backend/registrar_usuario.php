@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($certificado === NULL) {
         mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
     } else {
-        mysqli_stmt_bind_param($stmt, "ssssssssiiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
+        mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
     }
 
     try {
