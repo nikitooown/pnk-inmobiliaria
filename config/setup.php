@@ -36,4 +36,19 @@ function conectar() {
     }
     return $conn;
 }
+
+
+// Conexión para AWS
+$host = 'localhost';
+$db   = 'pnks';       // Nombre de la base de datos
+$user = 'pnk_user';   // El usuario que creamos
+$pass = 'pass_segura'; // La contraseña que elegiste
+
+$conexion = new mysqli($host, $user, $pass, $db);
+
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
+$conexion->set_charset("utf8mb4"); // Importante para que no salgan símbolos raros
+
 ?>
