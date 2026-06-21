@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNK Inmobiliaria</title>
+  <link rel="stylesheet" href="css/mystyle.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+  <header>
+<ul>
+  <li class="logo">
+    <a href="index.html" class="logo-link">
+      <img src="img/logo.png" alt="Logo">
+    </a>
+  </li>
+</ul>
+
+<ul>
+  <li><a href="registro.php">Registrate</a></li>
+  <li><a href="iniciosesion.php">Inicio Sesión</a></li>
+  <li><a href="contacto.php">Contacto</a></li>
+</ul>
+</header>
+
+
+  <section class="filtros_propiedad">
+    <form>
+      <label for="tipo_propiedad">Propiedad:</label>
+      <select id="tipo_propiedad" name="tipo_propiedad">
+        <option value="Casa">Casa</option>
+        <option value="Departamento">Departamento</option>
+        <option value="Terreno">Terreno</option>
+      </select>
+
+      <label for="provincia">Provincia:</label>
+      <select id="provincia" name="provincia">
+        <option value="Elqui">Elqui</option>
+        <option value="Limarí">Limarí</option>
+        <option value="Choapa">Choapa</option>
+      </select>
+
+      <label for="comuna">Comuna:</label>
+      <select id="comuna" name="comuna">
+        <option value="La Serena">La Serena</option>
+        <option value="Coquimbo">Coquimbo</option>
+        <option value="Andacollo">Andacollo</option>
+        <option value="La Higuera">La Higuera</option>
+        <option value="Paihuano">Paihuano</option>
+        <option value="Vicuña">Vicuña</option>
+      </select>
+
+      <button type="button" onclick="window.location.href='catalogo.php'">Buscar</button>
+    </form>
+  </section>
+
+  <section class="carrusel">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+      <div class="carousel-inner">
+
+        <div class="carousel-item active"> 
+          <img src="https://images.pexels.com/photos/9643118/pexels-photo-9643118.jpeg" class="d-block w-100" alt="Casa de Campo">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo">
+          <img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">
+          </div>
+            <div class="carousel-text-main">
+              <h1>CASA DE CAMPO</h1>
+              <h2>EXCELENTE OPORTUNIDAD EN LA NATURALEZA</h2>
+              <h3 class="destacado">$180.000.000 - 4.750 UF</h3>
+            </div>
+            <div class="carousel-location">
+                <span class="icono-ubicacion">📍</span> <p>VALLE DEL ELQUI, VICUÑA</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg" class="d-block w-100" alt="Casa Familiar">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>AMPLIA CASA FAMILIAR</h1>
+              <h2>IDEAL PARA LA VIDA EN FAMILIA</h2>
+              <h3 class="destacado">$285.000.000 - 7.500 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>EL MILAGRO, LA SERENA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="https://images.pexels.com/photos/28368005/pexels-photo-28368005.jpeg" class="d-block w-100" alt="Departamento">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPARTAMENTO MODERNO</h1>
+              <h2>DISEÑO Y COMODIDAD A PASOS DEL MAR</h2>
+              <h3 class="destacado">$155.000.000 - 4.100 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>AVENIDA DEL MAR, LA SERENA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="https://images.pexels.com/photos/36075876/pexels-photo-36075876.jpeg" class="d-block w-100" alt="Terreno">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>TERRENO AGRÍCOLA</h1>
+              <h2>AMPLIOS ESPACIOS PARA TUS PROYECTOS</h2>
+              <h3 class="destacado">$65.000.000 - 1.710 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>PAN DE AZÚCAR, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="https://images.pexels.com/photos/26571206/pexels-photo-26571206.jpeg" class="d-block w-100" alt="Depto Estudio">
+          <div class="carousel-content-overlay">
+            <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPARTAMENTO ESTUDIO</h1>
+              <h2>CÉNTRICO, PRÁCTICO Y CONECTADO</h2>
+              <h3 class="destacado">$95.000.000 - 2.500 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CENTRO, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="https://images.pexels.com/photos/8134845/pexels-photo-8134845.jpeg" class="d-block w-100" alt="Casa Lujo">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASA DE LUJO</h1>
+              <h2>DISEÑO EXCLUSIVO Y FINAS TERMINACIONES</h2>
+              <h3 class="destacado">$420.000.000 - 11.000 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>ROSARIO DE PEÑUELAS, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <!-- NUEVAS PROPIEDADES CARRUSEL (sin imagen) -->
+
+        <div class="carousel-item"> 
+          <img src="img/casa_laserena_mediterraneo.jpg" class="d-block w-100" alt="Casa moderna con antejardín">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASA ESTILO MEDITERRÁNEO</h1>
+              <h2>ENCANTO Y ELEGANCIA EN EL MILAGRO</h2>
+              <h3 class="destacado">$160.000.000 - 4.220 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>EL MILAGRO, LA SERENA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_laserena_primeralinea.jpg" class="d-block w-100" alt="Balcón mirando a la playa">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPTO PRIMERA LÍNEA</h1>
+              <h2>VISTA AL MAR EN AVENIDA DEL MAR</h2>
+              <h3 class="destacado">$135.000.000 - 3.560 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>AVENIDA DEL MAR, LA SERENA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_laserena_panoramico.jpg" class="d-block w-100" alt="Sitio en el cerro con vista a la bahía">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>SITIO VISTA PANORÁMICA</h1>
+              <h2>MIRADOR NATURAL EN CERRO GRANDE</h2>
+              <h3 class="destacado">$85.000.000 - 2.240 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CERRO GRANDE, LA SERENA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/casa_coquimbo_bahia.jpg" class="d-block w-100" alt="Casa en pendiente mirando al mar">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASA CON VISTA A LA BAHÍA</h1>
+              <h2>VIVE FRENTE AL MAR EN LA HERRADURA</h2>
+              <h3 class="destacado">$145.000.000 - 3.825 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>LA HERRADURA, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_coquimbo_resort.jpg" class="d-block w-100" alt="Edificio moderno con piscina central">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPTO RESORT & CASINO</h1>
+              <h2>LUJO Y ENTRETENCIÓN EN PEÑUELAS</h2>
+              <h3 class="destacado">$115.000.000 - 3.030 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>PEÑUELAS, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_coquimbo_totoralillo.jpg" class="d-block w-100" alt="Terreno de arena a pasos del agua">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>TERRENO A PASOS DE LA COSTA</h1>
+              <h2>ÚLTIMO TERRENO FRENTE AL MAR</h2>
+              <h3 class="destacado">$95.000.000 - 2.500 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>TOTORALILLO, COQUIMBO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/casa_andacollo_colonial.jpg" class="d-block w-100" alt="Fachada de casa tradicional/pueblo">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASONA COLONIAL RESTAURADA</h1>
+              <h2>HISTORIA Y ARQUITECTURA EN EL CENTRO</h2>
+              <h3 class="destacado">$75.000.000 - 1.980 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CENTRO HISTÓRICO, ANDACOLLO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_andacollo_montana.jpg" class="d-block w-100" alt="Edificio pequeño rodeado de cerros">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPTO DE MONTAÑA</h1>
+              <h2>PAZ Y NATURALEZA EN EL PEREGRINO</h2>
+              <h3 class="destacado">$52.000.000 - 1.370 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CONDOMINIO EL PEREGRINO, ANDACOLLO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_andacollo_solar.jpg" class="d-block w-100" alt="Sitio plano, árido y a todo sol">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>SITIO PARA PROYECTO SOLAR</h1>
+              <h2>ENERGÍA RENOVABLE EN CURQUE</h2>
+              <h3 class="destacado">$28.000.000 - 740 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>SECTOR CURQUE, ANDACOLLO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/casa_madera_playa.jpg" class="d-block w-100" alt="Casa de madera estilo playero/dunas">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>REFUGIO COSTERO SUSTENTABLE</h1>
+              <h2>ECO-LUJO EN PUNTA DE CHOROS</h2>
+              <h3 class="destacado">$92.000.000 - 2.425 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>PUNTA DE CHOROS, LA HIGUERA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_lahiguera_loft.jpg" class="d-block w-100" alt="Ventanal interior mirando botes de caleta">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>LOFT MIRADOR DEL PUERTO</h1>
+              <h2>VISTA ÚNICA EN CALETA HORNOS</h2>
+              <h3 class="destacado">$48.000.000 - 1.265 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CALETA HORNOS, LA HIGUERA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_lahiguera_olivos.jpg" class="d-block w-100" alt="Parcela de tierra seca con olivos">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>PARCELA DE OLIVOS CENTENARIOS</h1>
+              <h2>TRADICIÓN Y NATURALEZA EN LOS CHOROS</h2>
+              <h3 class="destacado">$35.000.000 - 920 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>PUEBLO DE LOS CHOROS, LA HIGUERA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/casa_paihuano_adobe.jpg" class="d-block w-100" alt="Casita blanca rústica de Pisco Elqui">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASA RÚSTICA DE ADOBE</h1>
+              <h2>ARQUITECTURA TRADICIONAL EN PISCO ELQUI</h2>
+              <h3 class="destacado">$170.000.000 - 4.485 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>PISCO ELQUI, PAIHUANO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_paihuano_suite.jpg" class="d-block w-100" alt="Terraza en altura mirando el valle">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>SUITE BOUTIQUE EN TERRAZA</h1>
+              <h2>EXCLUSIVIDAD EN MONTEGRANDE</h2>
+              <h3 class="destacado">$110.000.000 - 2.900 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>MONTEGRANDE, PAIHUANO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_paihuano_rio.jpg" class="d-block w-100" alt="Sitio verde con piedras al lado del río">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>SITIO MÍSTICO A ORILLA DE RÍO</h1>
+              <h2>ENERGÍA Y NATURALEZA EN COCHIGUAZ</h2>
+              <h3 class="destacado">$125.000.000 - 3.300 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>COCHIGUAZ, PAIHUANO</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/casa_roja_campo.jpg" class="d-block w-100" alt="Casa roja de campo">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>CASA DE CAMPO</h1>
+              <h2>NUEVA OPORTUNIDAD EN EL VALLE DEL ELQUI</h2>
+              <h3 class="destacado">$180.000.000 - 4.750 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>VALLE DEL ELQUI, VICUÑA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/depto_vicuna_gabriela.jpg" class="d-block w-100" alt="Edificio de 3 pisos en calle tranquila">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>DEPTO EDIFICIO GABRIELA</h1>
+              <h2>MODERNO DEPARTAMENTO EN VICUÑA</h2>
+              <h3 class="destacado">$82.000.000 - 2.160 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>CENTRO DE VICUÑA, VICUÑA</p></div>
+          </div>
+        </div>
+
+        <div class="carousel-item"> 
+          <img src="img/terreno_vicuna_agricola.jpg" class="d-block w-100" alt="Tierra arada con canal de regadío">
+          <div class="carousel-content-overlay">
+          <div class="carousel-logo"><img src="img/logocarrusel.png" alt="Logo PNK Inmobiliaria" class="logo-img">  </div>
+            <div class="carousel-text-main">
+              <h1>PARCELA AGRÍCOLA CON CANAL</h1>
+              <h2>TIERRA FÉRTIL EN DIAGUITAS</h2>
+              <h3 class="destacado">$65.000.000 - 1.715 UF</h3>
+            </div>
+            <div class="carousel-location"><span class="icono-ubicacion">📍</span> <p>DIAGUITAS, VICUÑA</p></div>
+          </div>
+        </div>
+
+      </div> <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+    </div> 
+  </section>
+
+  <section class="zona-tarjetas">
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/9643118/pexels-photo-9643118.jpeg" alt="Casa rústica">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA DE CAMPO</h3>
+          <p class="ubicacion">📍 VALLE DEL ELQUI, VICUÑA</p>
+          <p class="precio-destacado">$180.000.000 - 4.750 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg" alt="Casa familiar">
+        </div>
+        <div class="texto-propiedad">
+          <h3>AMPLIA CASA FAMILIAR</h3>
+          <p class="ubicacion">📍 EL MILAGRO, LA SERENA</p>
+          <p class="precio-destacado">$285.000.000 - 7.500 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/28368005/pexels-photo-28368005.jpeg" alt="Departamento">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPARTAMENTO MODERNO</h3>
+          <p class="ubicacion">📍 AVENIDA DEL MAR, LA SERENA</p>
+          <p class="precio-destacado">$155.000.000 - 4.100 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/36075876/pexels-photo-36075876.jpeg" alt="Terreno">
+        </div>
+        <div class="texto-propiedad">
+          <h3>TERRENO AGRÍCOLA</h3>
+          <p class="ubicacion">📍 PAN DE AZÚCAR, COQUIMBO</p>
+          <p class="precio-destacado">$65.000.000 - 1.710 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/26571206/pexels-photo-26571206.jpeg" alt="Depto estudio">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPARTAMENTO ESTUDIO</h3>
+          <p class="ubicacion">📍 CENTRO, COQUIMBO</p>
+          <p class="precio-destacado">$95.000.000 - 2.500 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="https://images.pexels.com/photos/8134845/pexels-photo-8134845.jpeg" alt="Casa lujo">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA DE LUJO</h3>
+          <p class="ubicacion">📍 ROSARIO DE PEÑUELAS, COQUIMBO</p>
+          <p class="precio-destacado">$420.000.000 - 11.000 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <!-- NUEVAS PROPIEDADES -->
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_laserena_mediterraneo.jpg" alt="Casa moderna con antejardín">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA ESTILO MEDITERRÁNEO</h3>
+          <p class="ubicacion">📍 EL MILAGRO, LA SERENA</p>
+          <p class="precio-destacado">$160.000.000 - 4.220 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_laserena_primeralinea.jpg" alt="Balcón mirando a la playa">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPTO PRIMERA LÍNEA</h3>
+          <p class="ubicacion">📍 AVENIDA DEL MAR, LA SERENA</p>
+          <p class="precio-destacado">$135.000.000 - 3.560 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_laserena_panoramico.jpg" alt="Sitio en el cerro con vista a la bahía">
+        </div>
+        <div class="texto-propiedad">
+          <h3>SITIO VISTA PANORÁMICA</h3>
+          <p class="ubicacion">📍 CERRO GRANDE, LA SERENA</p>
+          <p class="precio-destacado">$85.000.000 - 2.240 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_coquimbo_bahia.jpg" alt="Casa en pendiente mirando al mar">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA CON VISTA A LA BAHÍA</h3>
+          <p class="ubicacion">📍 LA HERRADURA, COQUIMBO</p>
+          <p class="precio-destacado">$145.000.000 - 3.825 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_coquimbo_resort.jpg" alt="Edificio moderno con piscina central">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPTO RESORT & CASINO</h3>
+          <p class="ubicacion">📍 PEÑUELAS, COQUIMBO</p>
+          <p class="precio-destacado">$115.000.000 - 3.030 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_coquimbo_totoralillo.jpg" alt="Terreno de arena a pasos del agua">
+        </div>
+        <div class="texto-propiedad">
+          <h3>TERRENO A PASOS DE LA COSTA</h3>
+          <p class="ubicacion">📍 TOTORALILLO, COQUIMBO</p>
+          <p class="precio-destacado">$95.000.000 - 2.500 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_andacollo_colonial.jpg" alt="Fachada de casa tradicional/pueblo">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASONA COLONIAL RESTAURADA</h3>
+          <p class="ubicacion">📍 CENTRO HISTÓRICO, ANDACOLLO</p>
+          <p class="precio-destacado">$75.000.000 - 1.980 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_andacollo_montana.jpg" alt="Edificio pequeño rodeado de cerros">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPTO DE MONTAÑA</h3>
+          <p class="ubicacion">📍 CONDOMINIO EL PEREGRINO, ANDACOLLO</p>
+          <p class="precio-destacado">$52.000.000 - 1.370 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_andacollo_solar.jpg" alt="Sitio plano, árido y a todo sol">
+        </div>
+        <div class="texto-propiedad">
+          <h3>SITIO PARA PROYECTO SOLAR</h3>
+          <p class="ubicacion">📍 SECTOR CURQUE, ANDACOLLO</p>
+          <p class="precio-destacado">$28.000.000 - 740 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_madera_playa.jpg" alt="Casa de madera estilo playero/dunas">
+        </div>
+        <div class="texto-propiedad">
+          <h3>REFUGIO COSTERO SUSTENTABLE</h3>
+          <p class="ubicacion">📍 PUNTA DE CHOROS, LA HIGUERA</p>
+          <p class="precio-destacado">$92.000.000 - 2.425 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_lahiguera_loft.jpg" alt="Ventanal interior mirando botes de caleta">
+        </div>
+        <div class="texto-propiedad">
+          <h3>LOFT MIRADOR DEL PUERTO</h3>
+          <p class="ubicacion">📍 CALETA HORNOS, LA HIGUERA</p>
+          <p class="precio-destacado">$48.000.000 - 1.265 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_lahiguera_olivos.jpg" alt="Parcela de tierra seca con olivos">
+        </div>
+        <div class="texto-propiedad">
+          <h3>PARCELA DE OLIVOS CENTENARIOS</h3>
+          <p class="ubicacion">📍 PUEBLO DE LOS CHOROS, LA HIGUERA</p>
+          <p class="precio-destacado">$35.000.000 - 920 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_paihuano_adobe.jpg" alt="Casita blanca rústica de Pisco Elqui">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA RÚSTICA DE ADOBE</h3>
+          <p class="ubicacion">📍 PISCO ELQUI, PAIHUANO</p>
+          <p class="precio-destacado">$170.000.000 - 4.485 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_paihuano_suite.jpg" alt="Terraza en altura mirando el valle">
+        </div>
+        <div class="texto-propiedad">
+          <h3>SUITE BOUTIQUE EN TERRAZA</h3>
+          <p class="ubicacion">📍 MONTEGRANDE, PAIHUANO</p>
+          <p class="precio-destacado">$110.000.000 - 2.900 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_paihuano_rio.jpg" alt="Sitio verde con piedras al lado del río">
+        </div>
+        <div class="texto-propiedad">
+          <h3>SITIO MÍSTICO A ORILLA DE RÍO</h3>
+          <p class="ubicacion">📍 COCHIGUAZ, PAIHUANO</p>
+          <p class="precio-destacado">$125.000.000 - 3.300 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/casa_roja_campo.jpg" alt="Casa roja de campo">
+        </div>
+        <div class="texto-propiedad">
+          <h3>CASA DE CAMPO</h3>
+          <p class="ubicacion">📍 VALLE DEL ELQUI, VICUÑA</p>
+          <p class="precio-destacado">$180.000.000 - 4.750 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/depto_vicuna_gabriela.jpg" alt="Edificio de 3 pisos en calle tranquila">
+        </div>
+        <div class="texto-propiedad">
+          <h3>DEPTO EDIFICIO GABRIELA</h3>
+          <p class="ubicacion">📍 CENTRO DE VICUÑA, VICUÑA</p>
+          <p class="precio-destacado">$82.000.000 - 2.160 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+    <article class="tarjeta">
+        <div class="caja-foto">
+            <img src="img/terreno_vicuna_agricola.jpg" alt="Tierra arada con canal de regadío">
+        </div>
+        <div class="texto-propiedad">
+          <h3>PARCELA AGRÍCOLA CON CANAL</h3>
+          <p class="ubicacion">📍 DIAGUITAS, VICUÑA</p>
+          <p class="precio-destacado">$65.000.000 - 1.715 UF</p>
+        </div>
+        <a href="catalogo.php"><button>Más info</button></a>
+    </article>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

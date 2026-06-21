@@ -1,0 +1,529 @@
+body {
+  background-color: #efeee4;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #3c3c3c;
+  background-color: #efeee4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* LOGO PRINCIPAL */
+header {
+  background-color: #dedbc1;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 100;
+}
+
+header .logo img {
+  height: 80px;
+  width: auto;
+  display: block;
+  transition: transform 0.8s ease;
+}
+
+header .logo img:hover {
+  transform: scale(1.05);
+}
+
+/* Dashboard logo (si se usa en otra página) */
+.dashboard-logo img {
+  height: 50px;
+  width: auto;
+  display: inline-block;
+}
+
+header ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+header ul li a {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 8px 15px;
+  background-color: #b0a78f;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+header ul li.logo a {
+  border: none !important;
+  background-color: transparent;
+  padding: 0;
+}
+
+header ul li a:hover {
+  background-color: #3c3c3c;
+  color: #fff;
+}
+
+/* MENU */
+header .menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .menu li {
+  margin: 0 5px;
+}
+
+header .menu li.logo a {
+  font-weight: bold;
+  font-size: 18px;
+  color: #3c3c3c;
+  text-decoration: none;
+}
+
+header .menu li a {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 8px 15px;
+  border: 1px solid #3c3c3c;
+  background-color: #b0a78f;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+header .menu li a:hover {
+  background-color: #3c3c3c;
+  color: #fff;
+}
+
+/* Botón desplegable menú */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #dedbc1;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 101; /* Aseguramos que esté sobre el carrusel */
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: #3c3c3c;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #3c3c3c;
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* BUSCADOR / FILTROS */
+.filtros_propiedad {
+  position: relative;
+  z-index: 50;
+}
+
+.filtros select,
+.filtros button {
+  border-radius: 5px;
+  padding: 8px 15px;
+  border: 1px solid #3c3c3c;
+}
+
+section form {
+  background-color: #dedbc1;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+section form label {
+  font-weight: bold;
+  color: #444;
+}
+
+section form select {
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+section form button {
+  padding: 10px 25px;
+  background-color: #b0a78f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+section form button:hover {
+  background-color: #4a4444;
+}
+
+/* CARRUSEL */
+.carrusel {
+  position: relative;
+  z-index: 1;
+}
+
+.carousel-item img {
+  height: 600px;
+  object-fit: cover;
+}
+
+.carousel-content-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 60px 8%;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 10;
+  color: white;
+}
+
+/* Logo carrusel */
+.carousel-logo {
+  top: 100px;
+  left: 2px;
+  z-index: 10;
+}
+
+.carousel-logo .logo-img {
+  width: 300px;
+  height: auto;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.logo-texto span {
+  font-size: 0.8rem !important;
+  letter-spacing: 2px !important;
+  color: #cccccc !important;
+  text-transform: uppercase;
+}
+
+.logo-texto strong {
+  font-size: 2.2rem !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  margin: 2px 0;
+}
+
+.logo-texto small {
+  font-size: 0.7rem !important;
+  letter-spacing: 4px !important;
+  color: #b0a78f !important;
+  text-transform: uppercase;
+}
+
+/* Texto principal del carrusel */
+.carousel-text-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 700px;
+}
+
+.carousel-text-main h1 {
+  font-size: 3.5rem !important;
+  font-weight: bold !important;
+  color: #ffffff !important;
+  background-color: transparent !important;
+  text-transform: uppercase;
+  margin: 0 0 10px 0 !important;
+  padding: 0 !important;
+  line-height: 1.1;
+}
+
+.carousel-text-main h2 {
+  font-size: 1.4rem !important;
+  color: #f8f9fa !important;
+  margin: 0 0 15px 0 !important;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.carousel-text-main h3.destacado {
+  font-size: 1.3rem !important;
+  font-weight: bold !important;
+  color: #e02a8a !important;
+  margin: 0 !important;
+}
+
+.carousel-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+/* TARJETAS */
+.zona-tarjetas {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.tarjeta {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  width: calc(33.333% - 20px);
+  max-width: 400px;
+  transition: transform 0.3s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-10px);
+}
+
+.caja-foto {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  height: 220px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.caja-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.texto-propiedad h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  color: #3c3c3c;
+  text-align: left;
+}
+
+.texto-propiedad .precio-destacado {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff4500;
+  text-align: left;
+}
+
+.tarjeta button {
+  width: 100%;
+  padding: 12px;
+  background-color: #b0a78f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* ==========================================
+   FORMULARIOS DE REGISTRO / LOGIN (UNIFICADOS)
+   ========================================== */
+form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border: none; /* Se unifica: antes había borde, ahora sin borde (más moderno) */
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Por si el HTML aún tiene el estilo inline antiguo */
+form[style*="border:1px solid #ccc"] {
+  border: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+form h1 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+form p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+form hr {
+    border: 1px solid #efeee4;
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #3c3c3c;
+    font-size: 0.9rem;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="date"],
+form input[type="file"],
+form select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+  transition: all 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: #b0a78f;
+  box-shadow: 0 0 8px rgba(176, 167, 143, 0.2);
+  background-color: #fff;
+}
+
+form input[type="file"] {
+  padding: 10px;
+  background-color: #f4f3ed;
+  border: 1px dashed #b0a78f;
+  cursor: pointer;
+}
+
+form input[type="checkbox"] {
+  margin-top: 20px;
+  margin-right: 10px;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.clearfix {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.cancelbtn,
+.gestorbtn {
+  width: 100%;
+  background-color: #aaa;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.cancelbtn:hover,
+.gestorbtn:hover {
+  background-color: #3c3c3c;
+}
+
+.signupbtn,
+.propietariobtn {
+  width: 100%;
+  background-color: #b0a78f;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signupbtn:hover,
+.propietariobtn:hover {
+  background-color: #4a4444;
+}
+
+#genero {
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  section form {
+    flex-direction: column;
+  }
+  .tarjeta {
+    width: 100%;
+  }
+  .carousel-text-main h1 {
+    font-size: 2rem !important;
+  }
+  form {
+    margin: 20px;
+    padding: 20px;
+  }
+  .clearfix {
+    flex-direction: column-reverse;
+  }
+  .cancelbtn,
+  .signupbtn,
+  .gestorbtn,
+  .propietariobtn {
+    width: 100%;
+  }
+}
