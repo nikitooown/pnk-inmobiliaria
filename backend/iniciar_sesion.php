@@ -1,4 +1,5 @@
 <?php
+session_start();
 include ("../config/setup.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -49,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Si todo está OK → iniciar sesión
-    session_start();
     $_SESSION['usuario_sesion'] = $datos['nombre'];
     $_SESSION['foto_sesion']    = $datos['foto'];
     $_SESSION['nombre_perfil']  = $datos['nombre_perfil'];

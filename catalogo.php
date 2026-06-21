@@ -117,7 +117,7 @@
               <p class="precio-uf">UF <?= $uf_formateado ?></p>
             <?php endif; ?>
           </div>
-          <a href="detalle.php?id=<?= $row['id'] ?>" class="btn btn-primary">Quiero saber más!</a>
+          <a href="detalle.php?id=<?= $row['id'] ?>" class="btn btn-pnk">Quiero saber más!</a>
         </article>
     <?php
         endwhile;

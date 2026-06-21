@@ -45,14 +45,15 @@ if(isset($_SESSION['usuario_sesion']))
         <div class="col-md-2 p-3 sidebar">
             <h4 class="text-white mb-4">Mi Panel</h4>
 
-            <a href="#">Inicio</a>
-            <a href="#">Usuarios</a>
-            <a href="#">Reportes</a>
-            <a href="#">Configuración</a>
+            <a href="#" onclick="cargarSeccion('inicio')">Inicio</a>
+            <a href="#" onclick="cargarSeccion('usuarios')">Usuarios</a>
+            <a href="#" onclick="cargarSeccion('reportes')">Reportes</a>
+            <a href="#" onclick="cargarSeccion('configuracion')">Configuración</a>
         </div>
 
         <!-- Contenido -->
         <div class="col-md-10 p-4">
+            <div id="contenido-dinamico"></div>
             
             <!-- Encabezado usuario -->
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -100,16 +101,23 @@ if(isset($_SESSION['usuario_sesion']))
                                 </thead>
                                 <tbody>
                                 <?php
-                                    $sql="select * from usuarios";
-                                    $result=mysqli_query(conectar(),$sql);
-                                    $contar=mysqli_num_rows($result);
+                                    $por_pagina = 20;
+                                    $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+                                    $inicio = ($pagina - 1) * $por_pagina;
+                                    
+                                    $conexion = conectar();
+                                    $total_usuarios = mysqli_num_rows(mysqli_query($conexion, "SELECT id FROM usuarios"));
+                                    $total_paginas = ceil($total_usuarios / $por_pagina);
+                                    
+                                    $sql="SELECT * FROM usuarios ORDER BY id ASC LIMIT $inicio, $por_pagina";
+                                    $result=mysqli_query($conexion,$sql);
                                     while($datos=mysqli_fetch_array($result))
                                     {
                                 ?>
                                     <tr>
                                         <td><?php echo $datos['id'];?></td>
-                                        <td><?php echo $datos['nombre'];?></td>
-                                        <td><?php echo $datos['email'];?></td>
+                                        <td><?php echo htmlspecialchars($datos['nombre']);?></td>
+                                        <td><?php echo htmlspecialchars($datos['email']);?></td>
                                         <td><?php if($datos['estado']=='1'){?>
                                             <span class="badge" style="background-color: #b0a78f; color: #3c3c3c;">Activo</span>
                                             <?php
@@ -123,9 +131,33 @@ if(isset($_SESSION['usuario_sesion']))
                                     </tr>
                                 <?php
                                     }
+                                    mysqli_close($conexion);
                                 ?>  
                                 </tbody>
                             </table>
+                            <?php if ($total_paginas > 1): ?>
+                            <nav aria-label="Paginación de usuarios">
+                                <ul class="pagination justify-content-center">
+                                    <?php if ($pagina > 1): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a>
+                                        </li>
+                                    <?php endif; ?>
+                                    
+                                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                                        <li class="page-item <?php echo $i == $pagina ? 'active' : ''; ?>">
+                                            <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                        </li>
+                                    <?php endfor; ?>
+                                    
+                                    <?php if ($pagina < $total_paginas): ?>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </nav>
+                            <?php endif; ?>
                         </div>
                     <?php else: ?>
                         <h4 class="mb-3">¡Bienvenido/a, <?php echo htmlspecialchars($_SESSION['usuario_sesion']); ?>!</h4>
@@ -141,7 +173,131 @@ if(isset($_SESSION['usuario_sesion']))
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function cargarSeccion(seccion) {
+    const contenedor = document.getElementById('contenido-dinamico');
+    let archivo = '';
+    
+    switch(seccion) {
+        case 'inicio':
+            // Mostrar contenido estático del dashboard
+            contenedor.innerHTML = `
+                <div class="card" style="background-color: #dedbc1; color: #3c3c3c;">
+                    <div class="card-header" style="background-color: #b0a78f; color: #3c3c3c; font-weight: bold;">
+                        <?php if ($_SESSION['nombre_perfil'] === 'Administrador'): ?>
+                            Últimos registros
+                        <?php else: ?>
+                            Bienvenido/a
+                        <?php endif; ?>
+                    </div>
+                    <div class="card-body">
+                        <?php if ($_SESSION['nombre_perfil'] === 'Administrador'): ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead style="background-color: #b0a78f; color: #3c3c3c;">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                        $por_pagina = 20;
+                                        $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+                                        $inicio = ($pagina - 1) * $por_pagina;
+                                        
+                                        $conexion = conectar();
+                                        $total_usuarios = mysqli_num_rows(mysqli_query($conexion, "SELECT id FROM usuarios"));
+                                        $total_paginas = ceil($total_usuarios / $por_pagina);
+                                        
+                                        $sql="SELECT * FROM usuarios ORDER BY id ASC LIMIT $inicio, $por_pagina";
+                                        $result=mysqli_query($conexion,$sql);
+                                        while($datos=mysqli_fetch_array($result))
+                                        {
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $datos['id'];?></td>
+                                            <td><?php echo htmlspecialchars($datos['nombre']);?></td>
+                                            <td><?php echo htmlspecialchars($datos['email']);?></td>
+                                            <td><?php if($datos['estado']=='1'){?>
+                                                <span class="badge" style="background-color: #b0a78f; color: #3c3c3c;">Activo</span>
+                                                <?php
+                                                }else{
+                                                    ?>
+                                                    <span class="badge" style="background-color: #8a8574; color: #3c3c3c;">Inactivo</span>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        }
+                                        mysqli_close($conexion);
+                                    ?>  
+                                    </tbody>
+                                </table>
+                                <?php if ($total_paginas > 1): ?>
+                                <nav aria-label="Paginación de usuarios">
+                                    <ul class="pagination justify-content-center">
+                                        <?php if ($pagina > 1): ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a>
+                                            </li>
+                                        <?php endif; ?>
+                                        
+                                        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                                            <li class="page-item <?php echo $i == $pagina ? 'active' : ''; ?>">
+                                                <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                            </li>
+                                        <?php endfor; ?>
+                                        
+                                        <?php if ($pagina < $total_paginas): ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a>
+                                            </li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </nav>
+                                <?php endif; ?>
+                            </div>
+                        <?php else: ?>
+                            <h4 class="mb-3">¡Bienvenido/a, <?php echo htmlspecialchars($_SESSION['usuario_sesion']); ?>!</h4>
+                            <p>En esta sección podrás gestionar tus propiedades.</p>
+                            <p style="margin-top: 15px;">
+                                <a href="mis-propiedades.php" class="btn btn-pnk">Mis Propiedades</a>
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            `;
+            return;
+        case 'usuarios':
+            archivo = 'cargar_usuarios.php';
+            break;
+        case 'reportes':
+            archivo = 'cargar_reportes.php';
+            break;
+        case 'configuracion':
+            archivo = 'cargar_configuracion.php';
+            break;
+        default:
+            contenedor.innerHTML = '<p>Sección no encontrada.</p>';
+            return;
+    }
+    
+    fetch(archivo)
+        .then(response => response.text())
+        .then(html => {
+            contenedor.innerHTML = html;
+        })
+        .catch(error => {
+            contenedor.innerHTML = '<p>Error al cargar la sección.</p>';
+            console.error('Error:', error);
+        });
+}
+</script>
 
 <footer class="text-center py-4 mt-5 border-top" style="background-color: #b0a78f; color: #3c3c3c;">
   <p class="mb-0">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>

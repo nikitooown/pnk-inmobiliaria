@@ -4,13 +4,13 @@ include ("../config/setup.php");
 
 // Validación: solo Administrador puede acceder
 if ($_SESSION['nombre_perfil'] !== 'Administrador') {
-    echo json_encode(['success' => false, 'mensaje' => 'No autorizado.']);
+    echo json_encode(['success' => false, 'message' => 'No autorizado.']);
     exit();
 }
 
 // Solo aceptar POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode(['success' => false, 'mensaje' => 'Método no permitido.']);
+    echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
     exit();
 }
 
@@ -18,19 +18,25 @@ switch($_POST['accion']){
     case "insertar": echo json_encode(insertar()); exit();
     case "modificar": echo json_encode(modificar()); exit();
     case "eliminar": echo json_encode(eliminar()); exit();
-    case "cancelar": echo json_encode(['success' => true, 'mensaje' => 'Operación cancelada.']); exit();
-    default: echo json_encode(['success' => false, 'mensaje' => 'Acción no reconocida.']); exit();
+    case "cancelar": echo json_encode(['success' => true, 'message' => 'Operación cancelada.']); exit();
+    default: echo json_encode(['success' => false, 'message' => 'Acción no reconocida.']); exit();
 }
 
 function insertar() {
     $conexion = conectar();
 
-    $rut       = $_POST['frm_rut'];
-    $nombre    = $_POST['frm_nombre'];
-    $apellido  = $_POST['frm_apellido'];
-    $usuario   = $_POST['frmusuario'];
-    $estado    = $_POST['frm_estado'];
-    $idperfil  = $_POST['frm_idperfil'];
+    $rut       = $_POST['frm_rut'] ?? '';
+    $nombre    = $_POST['frm_nombre'] ?? '';
+    $apellido  = $_POST['frm_apellido'] ?? '';
+    $usuario   = $_POST['frmusuario'] ?? '';
+    $estado    = $_POST['frm_estado'] ?? '';
+    $idperfil  = $_POST['frm_idperfil'] ?? '';
+
+    // Validación estricta de campos obligatorios
+    if (empty($rut) || empty($nombre) || empty($usuario)) {
+        echo json_encode(['success' => false, 'message' => 'Campos obligatorios vacíos']);
+        exit;
+    }
 
     // Asignar contraseña encriptada con hash del RUT
     $clave_hash = password_hash($rut, PASSWORD_DEFAULT);
@@ -43,7 +49,7 @@ function insertar() {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
-        return ['success' => true, 'mensaje' => 'Usuario guardado correctamente. Contraseña inicial: RUT del usuario.'];
+        return ['success' => true, 'message' => 'Usuario guardado correctamente. Contraseña inicial: RUT del usuario.'];
     } catch (mysqli_sql_exception $e) {
         $errorCode = $e->getCode();
         $errorMessage = 'Error al crear el usuario.';
@@ -54,7 +60,7 @@ function insertar() {
         
         error_log('Error en insertar usuario: ' . $e->getMessage());
         mysqli_close($conexion);
-        return ['success' => false, 'mensaje' => $errorMessage];
+        return ['success' => false, 'message' => $errorMessage];
     }
 }
 
@@ -78,7 +84,7 @@ function modificar() {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
-        return ['success' => true, 'mensaje' => 'Usuario modificado correctamente.'];
+        return ['success' => true, 'message' => 'Usuario modificado correctamente.'];
     } catch (mysqli_sql_exception $e) {
         $errorCode = $e->getCode();
         $errorMessage = 'Error al modificar el usuario.';
@@ -89,7 +95,7 @@ function modificar() {
         
         error_log('Error en modificar usuario: ' . $e->getMessage());
         mysqli_close($conexion);
-        return ['success' => false, 'mensaje' => $errorMessage];
+        return ['success' => false, 'message' => $errorMessage];
     }
 }
 
@@ -104,12 +110,12 @@ function eliminar() {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
-        return ['success' => true, 'mensaje' => 'Usuario eliminado correctamente.'];
+        return ['success' => true, 'message' => 'Usuario eliminado correctamente.'];
     } catch (mysqli_sql_exception $e) {
         $errorMessage = 'Error al eliminar el usuario. Intenta nuevamente.';
         error_log('Error en eliminar usuario: ' . $e->getMessage());
         mysqli_close($conexion);
-        return ['success' => false, 'mensaje' => $errorMessage];
+        return ['success' => false, 'message' => $errorMessage];
     }
 }
 ?>

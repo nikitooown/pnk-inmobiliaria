@@ -63,7 +63,8 @@ CREATE TABLE fotografias (
     nombre_original VARCHAR(255),
     es_principal TINYINT(1) DEFAULT 0,
     fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_propiedad) REFERENCES propiedades(id) ON DELETE CASCADE
+    FOREIGN KEY (id_propiedad) REFERENCES propiedades(id) ON DELETE CASCADE,
+    INDEX idx_id_propiedad (id_propiedad)
 );
 
 -- Tabla: mensajes_contacto

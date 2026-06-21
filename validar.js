@@ -82,7 +82,7 @@ function validarEmail(email) {
 
 function validarTelefonoChileno(tel) {
     const telLimpio = tel.replace(/\s+/g, '');
-    return /^\+?56?9\d{8}$/.test(telLimpio);
+    return /^(\+?56)?9\d{8}$/.test(telLimpio);
 }
 
 function validarMayorEdad(fechaStr) {
@@ -134,7 +134,7 @@ function agregarValidacionTiempoReal() {
             const val = input.value.trim();
             if (!val) { mostrarError(input, 'El teléfono es obligatorio.'); return; }
             if (!validarTelefonoChileno(val)) {
-                mostrarError(input, 'Formato: +569XXXXXXXX o 569XXXXXXXX.');
+                mostrarError(input, 'Formato: +569XXXXXXXX, 569XXXXXXXX o 912345678.');
             } else {
                 marcarValido(input);
             }
@@ -142,7 +142,7 @@ function agregarValidacionTiempoReal() {
     });
 
     // Contraseña
-    document.querySelectorAll('[name="psw"]').forEach(input => {
+    document.querySelectorAll('[name="pswd"]').forEach(input => {
         input.addEventListener('input', () => {
             const val = input.value;
             if (!validarPassword(val)) {
@@ -154,9 +154,9 @@ function agregarValidacionTiempoReal() {
     });
 
     // Repetir contraseña
-    document.querySelectorAll('[name="psw-repeat"]').forEach(input => {
+    document.querySelectorAll('[name="pswd-repeat"]').forEach(input => {
         input.addEventListener('blur', () => {
-            const original = document.querySelector('[name="psw"]');
+            const original = document.querySelector('[name="pswd"]');
             if (!original) return;
             if (input.value !== original.value) {
                 mostrarError(input, 'Las contraseñas no coinciden.');
@@ -226,8 +226,8 @@ function initFormRegistro(endpoint) {
         }
 
         // Contraseñas
-        const pswInput = form.querySelector('[name="psw"]');
-        const pswRepeat = form.querySelector('[name="psw-repeat"]');
+        const pswInput = form.querySelector('[name="pswd"]');
+        const pswRepeat = form.querySelector('[name="pswd-repeat"]');
         if (pswInput && !validarPassword(pswInput.value)) {
             mostrarError(pswInput, 'Contraseña muy corta (mínimo 8 caracteres).');
             valido = false;
@@ -263,7 +263,7 @@ function initFormRegistro(endpoint) {
             const data = await res.json();
 
             if (data.success) {
-                mostrarAlertas('alertasRegistro', [data.mensaje], 'success');
+                mostrarAlertas('alertasRegistro', [data.message], 'success');
                 form.reset();
                 setTimeout(() => { window.location.href = 'iniciosesion.php'; }, 2000);
             } else {
@@ -290,14 +290,14 @@ function initFormLogin() {
         e.preventDefault();
         limpiarAlertas('alertasLogin');
 
-        const correo = form.querySelector('[name="correo"], [name="email"], #correo, #email');
-        const psw    = form.querySelector('[name="psw"]');
+        const correo = form.querySelector('[name="correo"], [name="email"], "#correo", "#email"');
+        const psw    = form.querySelector('[name="password"]');
         let valido = true;
 
         if (!correo.value.trim()) { mostrarError(correo, 'El correo es obligatorio.'); valido = false; }
         else if (!validarEmail(correo.value.trim())) { mostrarError(correo, 'Email inválido.'); valido = false; }
 
-        if (!psw.value) { mostrarError(psw, 'La contraseña es obligatoria.'); valido = false; }
+        if (!psw || !psw.value) { mostrarError(psw, 'La contraseña es obligatoria.'); valido = false; }
 
         if (!valido) return;
 
@@ -346,7 +346,7 @@ async function cargarPropiedades() {
                     <span class="badge ${estadoBadge(p.estado)} ms-2">${p.estado}</span>
                 </div>
                 <div>
-                    <button class="btn btn-sm btn-primary me-1" onclick="abrirEditar(${p.id})">Editar</button>
+                    <button class="btn btn-sm btn-pnk me-1" onclick="abrirEditar(${p.id})">Editar</button>
                     <button class="btn btn-sm btn-danger" onclick="confirmarEliminar(${p.id})">Eliminar</button>
                 </div>
             </div>
@@ -362,7 +362,17 @@ function estadoBadge(estado) {
 }
 
 async function confirmarEliminar(id) {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta propiedad? Esta acción no se puede deshacer.')) return;
+    const result = await Swal.fire({
+        title: '¿Eliminar propiedad?',
+        text: 'Esta acción no se puede deshacer.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#dc3545'
+    });
+
+    if (!result.isConfirmed) return;
 
     const formData = new FormData();
     formData.append('accion', 'eliminar');
@@ -373,16 +383,16 @@ async function confirmarEliminar(id) {
 
     if (data.success) {
         document.getElementById(`prop-${id}`)?.remove();
-        alert(data.mensaje);
+        Swal.fire('Éxito', data.message, 'success');
     } else {
-        alert(data.mensaje || 'Error al eliminar.');
+        Swal.fire('Error', data.message || 'Error al eliminar.', 'error');
     }
 }
 
 async function abrirEditar(id) {
     const res = await fetch(`backend/propiedades_controller.php?accion=obtener&id=${id}`);
     const data = await res.json();
-    if (!data.success) { alert('No se pudo cargar la propiedad.'); return; }
+    if (!data.success) { Swal.fire('Error', 'No se pudo cargar la propiedad.', 'error'); return; }
 
     const p = data.data;
     // Rellenar formulario modal de edición
@@ -460,7 +470,7 @@ function initFormCrearPropiedad() {
                 Swal.fire({
                     icon: 'success',
                     title: '¡Propiedad Creada!',
-                    text: data.mensaje || 'El inmueble ha sido publicado exitosamente.'
+                    text: data.message || 'El inmueble ha sido publicado exitosamente.'
                 });
                 form.reset();
                 form.querySelectorAll('.is-valid, .is-invalid').forEach(i => i.classList.remove('is-valid', 'is-invalid'));
@@ -469,7 +479,7 @@ function initFormCrearPropiedad() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error al guardar',
-                    text: (data.errores && data.errores.join(', ')) || data.mensaje || 'No se pudo registrar la propiedad.'
+                    text: (data.errores && data.errores.join(', ')) || data.message || 'No se pudo registrar la propiedad.'
                 });
             }
         } catch (err) {
@@ -505,9 +515,9 @@ function initFormEditarPropiedad() {
             const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
             modal?.hide();
             cargarPropiedades();
-            setTimeout(() => alert(data.mensaje), 300);
+        setTimeout(() => Swal.fire('Éxito', data.message, 'success'), 300);
         } else {
-            mostrarAlertas('alertasEditar', data.errores || [data.mensaje]);
+            mostrarAlertas('alertasEditar', data.errores || [data.message]);
         }
 
         btn.disabled = false;

@@ -145,7 +145,7 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                 <span id="form-titulo">Formulario Usuario</span>
             </div>
             <div class="card-body">
-                <form id="frm_usu" novalidate>
+                <form id="frm_usu" novalidate onsubmit="event.preventDefault();">
                     <div class="row separacion">
                         <div class="col-sm-3">RUT:</div>
                         <div class="col-sm-9"><input type="text" class="form-control" id="frm_rut" name="frm_rut"></div>
@@ -257,5 +257,9 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
         </div>
     </div>
     <br>
+
+<footer class="bg-pnk text-center py-4 mt-5 border-top">
+  <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
+</footer>
 </body>
 </html>

@@ -131,7 +131,7 @@ function crear()
         }
     } catch (\Throwable $e) {
         error_log('Error al crear propiedad: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
         exit();
     }
 
@@ -167,6 +167,9 @@ function crear()
             }
         }
     }
+
+    // Cerrar conexión
+    mysqli_close($conexion);
 
     echo json_encode([
         "success" => true,
@@ -221,7 +224,7 @@ function listar()
         echo json_encode(["success" => true, "data" => $propiedades]);
     } catch (\Throwable $e) {
         error_log('Error al listar propiedades: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
     }
 }
 
@@ -278,7 +281,7 @@ function obtener()
         echo json_encode(["success" => true, "data" => $propiedad]);
     } catch (\Throwable $e) {
         error_log('Error al obtener propiedad: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
     }
 }
 
@@ -360,7 +363,7 @@ function eliminar()
         mysqli_stmt_close($stmt);
     } catch (\Throwable $e) {
         error_log('Error al eliminar propiedad: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
     }
 }
 
@@ -446,6 +449,6 @@ function editar()
         ]);
     } catch (\Throwable $e) {
         error_log('Error al editar propiedad: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
     }
 }

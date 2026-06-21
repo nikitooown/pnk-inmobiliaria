@@ -92,5 +92,9 @@
       });
     });
   </script>
+
+<footer class="bg-pnk text-center py-4 mt-5 border-top">
+  <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
+</footer>
 </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include __DIR__ . "/../config/setup.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -38,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $error_msg = "El archivo es demasiado grande (máximo 5MB).";
                 }
                 // Guardar error en sesión para redirigir
-                session_start();
                 $_SESSION['error_certificado'] = $error_msg;
                 header("Location: ../registro.php?error=cert_1");
                 exit();
@@ -51,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Validar tamaño máximo (5MB = 5242880 bytes)
             if ($tamaño > 5242880) {
-                session_start();
                 $_SESSION['error_certificado'] = "El archivo es demasiado grande (máximo 5MB).";
                 header("Location: ../registro.php?error=cert_2");
                 exit();
@@ -62,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $extensiones_permitidas = ['pdf', 'jpg', 'jpeg', 'png'];
             
             if (!in_array($extension, $extensiones_permitidas)) {
-                session_start();
                 $_SESSION['error_certificado'] = "Formato no permitido. Solo se aceptan: PDF, JPG, JPEG, PNG.";
                 header("Location: ../registro.php?error=cert_3");
                 exit();
@@ -77,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Guardar ruta relativa en la base de datos
                 $certificado = "uploads/certificados/" . $nombre_unico;
             } else {
-                session_start();
                 $_SESSION['error_certificado'] = "Error al guardar el archivo.";
                 header("Location: ../registro.php?error=cert_4");
                 exit();
@@ -101,16 +98,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'default.png', ?, ?)";
 
     $stmt = mysqli_prepare($conexion, $sql);
-    // Tipos: s=string, i=int, null para NULL
-    if ($certificado === NULL) {
-        mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
-    } else {
-        mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
-    }
+    // Tipos: s=string, i=int
+    // 11 placeholders: rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave_hash, estado, idperfil, certificado
+    mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
 
     try {
         mysqli_stmt_execute($stmt);
-        session_start();
         $_SESSION['success_registro'] = true;
         header("Location: ../iniciosesion.php");
         exit();
@@ -129,7 +122,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         error_log('Error en registro de usuario: ' . $e->getMessage());
         
-        session_start();
         $_SESSION['error_registro'] = $errorMsg;
         header("Location: ../registro.php?error=db_error");
         exit();

@@ -19,10 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if (empty($mensaje)) {
         $errores[] = "El mensaje es obligatorio.";
+    } elseif (strlen($mensaje) > 2000) {
+        $errores[] = "El mensaje no puede exceder los 2000 caracteres.";
     }
 
     if (!empty($errores)) {
-        echo json_encode(["success" => false, "mensaje" => implode(" ", $errores)]);
+        echo json_encode(["success" => false, "message" => implode(" ", $errores)]);
         exit();
     }
 
@@ -40,22 +42,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_close($conexion);
             echo json_encode([
                 "success" => true,
-                "mensaje" => "Mensaje enviado correctamente. Un gestor se pondrá en contacto contigo."
+                "message" => "Mensaje enviado correctamente. Un gestor se pondrá en contacto contigo."
             ]);
             exit();
         } else {
             mysqli_stmt_close($stmt);
             mysqli_close($conexion);
-            echo json_encode(["success" => false, "mensaje" => "Error al enviar el mensaje. Intenta nuevamente."]);
+            echo json_encode(["success" => false, "message" => "Error al enviar el mensaje. Intenta nuevamente."]);
             exit();
         }
     } catch (\Throwable $e) {
         error_log('Error en enviar_contacto: ' . $e->getMessage());
-        echo json_encode(["success" => false, "mensaje" => "Error de base de datos."]);
+        echo json_encode(["success" => false, "message" => "Error de base de datos."]);
         exit();
     }
 } else {
-    echo json_encode(["success" => false, "mensaje" => "Método no permitido."]);
+    echo json_encode(["success" => false, "message" => "Método no permitido."]);
     exit();
 }
 ?>
