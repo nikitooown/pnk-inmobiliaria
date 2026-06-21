@@ -14,6 +14,15 @@ if (file_exists($envFile)) {
     }
 }
 
+function nombre_perfil($id) {
+    $nombres = [
+        1 => 'Administrador',
+        2 => 'Propietario',
+        3 => 'Gestor Inmobiliario',
+    ];
+    return $nombres[$id] ?? 'Desconocido';
+}
+
 function conectar() {
     $servername = $_ENV['DB_HOST'] ?? "localhost";
     $username   = $_ENV['DB_USER'] ?? "root";

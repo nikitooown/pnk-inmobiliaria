@@ -369,25 +369,20 @@
     <!-- Google Maps iframe -->
     <div class="mapa-container">
       <?php
-      $direccion_mapa = '';
-      if (!empty($propiedad['latitud']) && !empty($propiedad['longitud'])) {
-          $direccion_mapa = $propiedad['latitud'] . ',' . $propiedad['longitud'];
-      } elseif (!empty($propiedad['direccion'])) {
-          $direccion_mapa = urlencode($propiedad['direccion'] . ', ' . $propiedad['comuna'] . ', Chile');
-      } else {
-          $direccion_mapa = urlencode($propiedad['comuna'] . ', Chile');
-      }
+      $partes_ubicacion = array_filter([
+          $propiedad['direccion'] ?? '',
+          $propiedad['sector'] ?? '',
+          $propiedad['comuna'] ?? '',
+          $propiedad['provincia'] ?? '',
+          'Chile'
+      ]);
+      $direccion_mapa = urlencode(implode(', ', $partes_ubicacion));
 
-      if (!empty($propiedad['latitud']) && !empty($propiedad['longitud'])):
+      if (!empty($direccion_mapa)):
       ?>
         <iframe 
           src="https://maps.google.com/maps?q=<?= $direccion_mapa ?>&output=embed" 
-          allowfullscreen loading="lazy">
-        </iframe>
-      <?php else: ?>
-        <iframe 
-          src="https://maps.google.com/maps?q=<?= $direccion_mapa ?>&output=embed" 
-          allowfullscreen loading="lazy">
+          width="100%" height="300" style="border:0;" loading="lazy">
         </iframe>
       <?php endif; ?>
     </div>

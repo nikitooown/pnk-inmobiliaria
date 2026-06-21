@@ -76,15 +76,12 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT p.nombre_perfil, COUNT(u.id) as cantidad 
-                            FROM perfiles p 
-                            LEFT JOIN usuarios u ON p.id = u.idperfil 
-                            GROUP BY p.id, p.nombre_perfil";
+                    $sql = "SELECT idperfil, COUNT(id) as cantidad FROM usuarios GROUP BY idperfil";
                     $result = mysqli_query(conectar(), $sql);
                     while($datos = mysqli_fetch_array($result)) {
                 ?>
                     <tr>
-                        <td><?php echo $datos['nombre_perfil'];?></td>
+                        <td><?php echo nombre_perfil($datos['idperfil']);?></td>
                         <td><?php echo $datos['cantidad'];?></td>
                     </tr>
                 <?php } ?>

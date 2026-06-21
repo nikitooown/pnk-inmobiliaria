@@ -36,6 +36,14 @@
         <option value="Terreno" <?php echo (isset($_GET['tipo']) && $_GET['tipo'] === 'Terreno') ? 'selected' : ''; ?>>Terreno</option>
       </select>
 
+      <label for="provincia">Provincia:</label>
+      <select id="provincia" name="provincia">
+        <option value="">-- Todas --</option>
+        <option value="Elqui" <?php echo (isset($_GET['provincia']) && $_GET['provincia'] === 'Elqui') ? 'selected' : ''; ?>>Elqui</option>
+        <option value="Limarí" <?php echo (isset($_GET['provincia']) && $_GET['provincia'] === 'Limarí') ? 'selected' : ''; ?>>Limarí</option>
+        <option value="Choapa" <?php echo (isset($_GET['provincia']) && $_GET['provincia'] === 'Choapa') ? 'selected' : ''; ?>>Choapa</option>
+      </select>
+
       <label for="comuna">Comuna:</label>
       <select id="comuna" name="comuna">
         <option value="">-- Todas --</option>
@@ -74,6 +82,12 @@
     if (!empty($_GET['tipo'])) {
         $sql .= " AND p.tipo = ?";
         $params[] = $_GET['tipo'];
+        $types .= "s";
+    }
+
+    if (!empty($_GET['provincia'])) {
+        $sql .= " AND p.provincia = ?";
+        $params[] = $_GET['provincia'];
         $types .= "s";
     }
 

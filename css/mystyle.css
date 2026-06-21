@@ -548,6 +548,31 @@ form input[type="checkbox"] {
   width: 100% !important;
 }
 
+/* SIDEBAR */
+.sidebar {
+  background-color: #3c3c3c;
+  min-height: calc(100vh - 80px);
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #dedbc1;
+  text-decoration: none;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #b0a78f;
+  color: #3c3c3c;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   section form {

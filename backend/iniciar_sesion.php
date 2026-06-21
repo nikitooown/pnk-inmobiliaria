@@ -15,15 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conexion = conectar();
 
     // Buscar usuario por email usando prepared statement
-    $sql = "SELECT usuarios.*, 
-                   CASE usuarios.idperfil
-                       WHEN 1 THEN 'Administrador'
-                       WHEN 2 THEN 'Propietario'
-                       WHEN 3 THEN 'Gestor Inmobiliario'
-                       ELSE 'Desconocido'
-                   END AS nombre_perfil
-            FROM usuarios 
-            WHERE usuarios.email=?";
+    $sql = "SELECT * FROM usuarios WHERE email=?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
@@ -52,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Si todo está OK → iniciar sesión
     $_SESSION['usuario_sesion'] = $datos['nombre'];
     $_SESSION['foto_sesion']    = $datos['foto'];
-    $_SESSION['nombre_perfil']  = $datos['nombre_perfil'];
+    $_SESSION['nombre_perfil']  = nombre_perfil($datos['idperfil']);
     $_SESSION['id']            = $datos['id'];
     $_SESSION['idperfil']      = $datos['idperfil'];
 

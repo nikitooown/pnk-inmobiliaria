@@ -36,6 +36,9 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                 <div>
                     <h1>Mis Propiedades</h1>
                     <p class="text-muted">Bienvenido/a, <?php echo htmlspecialchars($_SESSION['usuario_sesion']); ?> (<?php echo $_SESSION['nombre_perfil']; ?>)</p>
+                    <?php if ($_SESSION['nombre_perfil'] === 'Gestor Inmobiliario'): ?>
+                        <p class="text-muted" style="font-size: 0.9rem;"><em>Estás viendo el catálogo completo de la comunidad PNK</em></p>
+                    <?php endif; ?>
                 </div>
                 <div>
                     <a href="dashboard.php" class="btn btn-secondary">Volver al Dashboard</a>
@@ -99,13 +102,24 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="precio" class="form-label">Precio *</label>
+                            <div class="col-md-4 mb-3">
+                                <label for="precio" class="form-label">Precio (CLP) *</label>
                                 <input type="number" class="form-control" id="precio" name="precio" required min="0" step="1000">
                             </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="uf" class="form-label">Precio en UF</label>
+                                <input type="number" class="form-control" id="uf" name="uf" min="0" step="0.01">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="m2_terreno" class="form-label">Área Total del Terreno (m²)</label>
+                                <input type="number" class="form-control" id="m2_terreno" name="m2_terreno" min="0">
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="m2" class="form-label">Superficie (m²)</label>
-                                <input type="number" class="form-control" id="m2" name="m2" min="0">
+                                <label for="m2_construido" class="form-label">Área Construida (m²)</label>
+                                <input type="number" class="form-control" id="m2_construido" name="m2_construido" min="0">
                             </div>
                         </div>
 
@@ -117,6 +131,41 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                             <div class="col-md-6 mb-3">
                                 <label for="banos" class="form-label">Baños</label>
                                 <input type="number" class="form-control" id="banos" name="banos" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Equipamiento -->
+                        <div class="row mb-3">
+                            <label class="form-label">Equipamiento</label>
+                            <div class="col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="bodega" name="bodega" value="1">
+                                    <label class="form-check-label" for="bodega">Bodega</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="estacionamiento" name="estacionamiento" value="1">
+                                    <label class="form-check-label" for="estacionamiento">Estacionamiento</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="logia" name="logia" value="1">
+                                    <label class="form-check-label" for="logia">Logia</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="cocina_amoblada" name="cocina_amoblada" value="1">
+                                    <label class="form-check-label" for="cocina_amoblada">Cocina amoblada</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="antejardin" name="antejardin" value="1">
+                                    <label class="form-check-label" for="antejardin">Antejardín</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="patio_trasero" name="patio_trasero" value="1">
+                                    <label class="form-check-label" for="patio_trasero">Patio trasero</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="piscina" name="piscina" value="1">
+                                    <label class="form-check-label" for="piscina">Piscina</label>
+                                </div>
                             </div>
                         </div>
 
@@ -199,13 +248,24 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="editPrecio" class="form-label">Precio</label>
+                        <div class="col-md-4 mb-3">
+                            <label for="editPrecio" class="form-label">Precio (CLP)</label>
                             <input type="number" class="form-control" id="editPrecio" name="editPrecio" min="0">
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editUf" class="form-label">Precio en UF</label>
+                            <input type="number" class="form-control" id="editUf" name="editUf" min="0" step="0.01">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="editM2Terreno" class="form-label">Área Terreno (m²)</label>
+                            <input type="number" class="form-control" id="editM2Terreno" name="editM2Terreno" min="0">
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="editSuperficie" class="form-label">Superficie (m²)</label>
-                            <input type="number" class="form-control" id="editSuperficie" name="editSuperficie" min="0">
+                            <label for="editM2Construido" class="form-label">Área Construida (m²)</label>
+                            <input type="number" class="form-control" id="editM2Construido" name="editM2Construido" min="0">
                         </div>
                     </div>
 
@@ -220,12 +280,49 @@ if (!in_array($_SESSION['nombre_perfil'], $roles_permitidos)) {
                         </div>
                     </div>
 
+                    <!-- Equipamiento -->
+                    <div class="row mb-3">
+                        <label class="form-label">Equipamiento</label>
+                        <div class="col-md-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editBodega" name="editBodega" value="1">
+                                <label class="form-check-label" for="editBodega">Bodega</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editEstacionamiento" name="editEstacionamiento" value="1">
+                                <label class="form-check-label" for="editEstacionamiento">Estacionamiento</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editLogia" name="editLogia" value="1">
+                                <label class="form-check-label" for="editLogia">Logia</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editCocinaAmoblada" name="editCocinaAmoblada" value="1">
+                                <label class="form-check-label" for="editCocinaAmoblada">Cocina amoblada</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editAntejardin" name="editAntejardin" value="1">
+                                <label class="form-check-label" for="editAntejardin">Antejardín</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editPatioTrasero" name="editPatioTrasero" value="1">
+                                <label class="form-check-label" for="editPatioTrasero">Patio trasero</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="editPiscina" name="editPiscina" value="1">
+                                <label class="form-check-label" for="editPiscina">Piscina</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="editEstado" class="form-label">Estado</label>
                         <select class="form-select" id="editEstado" name="editEstado">
-                            <option value="Activa">Activa</option>
-                            <option value="Inactiva">Inactiva</option>
+                            <option value="Publicada">Publicada</option>
+                            <option value="Pendiente">Pendiente</option>
                             <option value="Vendida">Vendida</option>
+                            <option value="Arrendada">Arrendada</option>
+                            <option value="Inactiva">Inactiva</option>
                         </select>
                     </div>
                 </div>

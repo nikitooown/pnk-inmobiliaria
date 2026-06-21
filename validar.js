@@ -395,18 +395,33 @@ async function abrirEditar(id) {
     if (!data.success) { Swal.fire('Error', 'No se pudo cargar la propiedad.', 'error'); return; }
 
     const p = data.data;
-    // Rellenar formulario modal de edición
-    document.getElementById('editId').value       = p.id;
-    document.getElementById('editTitulo').value   = p.titulo;
-    document.getElementById('editDescripcion').value = p.descripcion || '';
-    document.getElementById('editTipo').value     = p.tipo;
-    document.getElementById('editPrecio').value   = p.precio;
-    document.getElementById('editDireccion').value = p.direccion;
-    document.getElementById('editComuna').value   = p.comuna;
-    document.getElementById('editSuperficie').value = p.superficie || '';
+    // Rellenar formulario modal de edición (con optional chaining por seguridad)
+    document.getElementById('editId').value           = p.id;
+    document.getElementById('editTitulo').value       = p.titulo;
+    document.getElementById('editDescripcion').value  = p.descripcion || '';
+    document.getElementById('editTipo').value         = p.tipo;
+    document.getElementById('editPrecio').value       = p.precio;
+    document.getElementById('editDireccion').value    = p.direccion;
+    document.getElementById('editComuna').value       = p.comuna;
+    document.getElementById('editProvincia').value    = p.provincia || '';
+    document.getElementById('editSector').value       = p.sector || '';
+    document.getElementById('editM2Terreno').value    = p.m2_terreno ?? '';
+    document.getElementById('editM2Construido').value = p.m2_construido ?? '';
+    document.getElementById('editUf').value           = p.uf ?? '';
     document.getElementById('editHabitaciones').value = p.habitaciones;
-    document.getElementById('editBanos').value    = p.banos;
-    document.getElementById('editEstado').value   = p.estado;
+    document.getElementById('editBanos').value        = p.banos;
+    document.getElementById('editLatitud').value      = p.latitud || '';
+    document.getElementById('editLongitud').value     = p.longitud || '';
+    document.getElementById('editEstado').value       = p.estado;
+
+    // Checkboxes de equipamiento
+    document.getElementById('editBodega')?.checked       = !!p.bodega;
+    document.getElementById('editEstacionamiento')?.checked = !!p.estacionamiento;
+    document.getElementById('editLogia')?.checked        = !!p.logia;
+    document.getElementById('editCocinaAmoblada')?.checked = !!p.cocina_amoblada;
+    document.getElementById('editAntejardin')?.checked   = !!p.antejardin;
+    document.getElementById('editPatioTrasero')?.checked = !!p.patio_trasero;
+    document.getElementById('editPiscina')?.checked      = !!p.piscina;
 
     const modal = new bootstrap.Modal(document.getElementById('modalEditar'));
     modal.show();
