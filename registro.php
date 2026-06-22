@@ -317,9 +317,9 @@ document.addEventListener("DOMContentLoaded", function() {
       if (telefono.value.trim() === "") {
         telefono.nextElementSibling.textContent = "Este campo es obligatorio.";
         valido = false;
-      } else if (!/^\+569\d{8}$/.test(telefono.value.trim())) {
-        telefono.nextElementSibling.textContent = "Teléfono inválido (+569XXXXXXXX).";
-        valido = false;
+      } else if (!/^(\+?56)?9\d{8}$/.test(telefono.value.trim())) {
+          telefono.nextElementSibling.textContent = "Teléfono inválido. Formatos aceptados: +569XXXXXXXX, 569XXXXXXXX o 912345678.";
+          valido = false;
       }
 
       // Validar email

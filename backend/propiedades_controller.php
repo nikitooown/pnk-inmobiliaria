@@ -2,6 +2,7 @@
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 include_once("../config/setup.php");
+include_once("../config/session_config.php");
 
 // Solo usuarios autenticados pueden gestionar propiedades
 if (!isset($_SESSION['id'])) {
@@ -329,7 +330,9 @@ function eliminar()
         while ($foto = mysqli_fetch_assoc($result_fotos)) {
             $ruta_completa = "../" . $foto['ruta'];
             if (file_exists($ruta_completa)) {
-                unlink($ruta_completa);
+                if (!unlink($ruta_completa)) {
+                    error_log("No se pudo eliminar el archivo: " . $ruta_completa);
+                }
             }
         }
         mysqli_stmt_close($stmt_fotos);

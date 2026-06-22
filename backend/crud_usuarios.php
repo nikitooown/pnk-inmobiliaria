@@ -1,6 +1,7 @@
 <?php
 session_start();
 include ("../config/setup.php");
+include ("../config/session_config.php");
 
 // Validación: solo Administrador puede acceder
 if ($_SESSION['nombre_perfil'] !== 'Administrador') {

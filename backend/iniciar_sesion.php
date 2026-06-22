@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once __DIR__ . "/../config/setup.php";
+require_once __DIR__ . "/../config/session_config.php";
+
+// Detectar si es petición AJAX (fetch)
+$es_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+           strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email    = $_POST['email'];
@@ -8,7 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validación básica: campos vacíos
     if (empty($email) || empty($password)) {
-        header("Location: ../iniciosesion.php?error=1");
+        if ($es_ajax) {
+            echo json_encode(['success' => false, 'message' => 'Debes completar todos los campos.']);
+        } else {
+            header("Location: ../iniciosesion.php?error=1");
+        }
         exit();
     }
 
@@ -22,8 +31,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) == 0) {
-        // Email no registrado
-        header("Location: ../iniciosesion.php?error=2");
+        if ($es_ajax) {
+            echo json_encode(['success' => false, 'message' => 'El correo ingresado no está registrado en el sistema.']);
+        } else {
+            header("Location: ../iniciosesion.php?error=2");
+        }
         exit();
     }
 
@@ -31,13 +43,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validar contraseña con password_verify
     if (!password_verify($password, $datos['clave'])) {
-        header("Location: ../iniciosesion.php?error=3");
+        if ($es_ajax) {
+            echo json_encode(['success' => false, 'message' => 'La contraseña ingresada es incorrecta.']);
+        } else {
+            header("Location: ../iniciosesion.php?error=3");
+        }
         exit();
     }
 
     // Validar estado (TINYINT: 1 = activo, 0 = inactivo)
     if ((int)$datos['estado'] !== 1) {
-        header("Location: ../iniciosesion.php?error=4");
+        if ($es_ajax) {
+            echo json_encode(['success' => false, 'message' => 'Tu cuenta está inactiva. Contacta al administrador.']);
+        } else {
+            header("Location: ../iniciosesion.php?error=4");
+        }
         exit();
     }
 
@@ -49,7 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['id']            = $datos['id'];
     $_SESSION['idperfil']      = $datos['idperfil'];
 
-    header("Location: ../dashboard.php");
+    if ($es_ajax) {
+        echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso', 'redirect' => '../dashboard.php', 'nombre' => $datos['nombre']]);
+    } else {
+        header("Location: ../dashboard.php");
+    }
     exit();
 }
 ?>

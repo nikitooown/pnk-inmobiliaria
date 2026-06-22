@@ -66,7 +66,7 @@
             Swal.fire({
               icon: 'success',
               title: '¡Mensaje enviado!',
-              text: data.mensaje || 'Tu mensaje ha sido recibido correctamente. Nos pondremos en contacto pronto.',
+              text: data.message || 'Tu mensaje ha sido recibido correctamente. Nos pondremos en contacto pronto.',
               confirmButtonText: 'Aceptar'
             });
             form.reset();
@@ -74,7 +74,7 @@
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: data.mensaje || 'Ocurrió un error al enviar tu mensaje.',
+              text: data.message || 'Ocurrió un error al enviar tu mensaje.',
               confirmButtonText: 'Aceptar'
             });
           }

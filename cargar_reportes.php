@@ -1,11 +1,17 @@
 <?php
-session_start();
+// No llamar session_start() aquí porque dashboard.php ya lo inició
 include("config/setup.php");
 
 // Validación: solo Administrador puede acceder
 if ($_SESSION['nombre_perfil'] !== 'Administrador') {
     echo json_encode(['success' => false, 'mensaje' => 'No autorizado.']);
     exit();
+}
+
+// Función para obtener nombre del perfil por ID
+function nombre_perfil($idperfil) {
+    $nombres = [1 => 'Administrador', 2 => 'Propietario', 3 => 'Gestor Inmobiliario'];
+    return $nombres[(int)$idperfil] ?? 'Desconocido';
 }
 ?>
 
@@ -22,10 +28,14 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                         <h6 class="card-title">Total Usuarios</h6>
                         <p class="card-text display-6">
                             <?php
-                                $sql = "SELECT COUNT(*) as total FROM usuarios";
-                                $result = mysqli_query(conectar(), $sql);
-                                $datos = mysqli_fetch_array($result);
+                                $conexion = conectar();
+                                $stmt = mysqli_prepare($conexion, "SELECT COUNT(*) as total FROM usuarios");
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+                                $datos = mysqli_fetch_assoc($result);
                                 echo $datos['total'];
+                                mysqli_stmt_close($stmt);
+                                mysqli_close($conexion);
                             ?>
                         </p>
                     </div>
@@ -37,10 +47,16 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                         <h6 class="card-title">Usuarios Activos</h6>
                         <p class="card-text display-6">
                             <?php
-                                $sql = "SELECT COUNT(*) as total FROM usuarios WHERE estado = 1";
-                                $result = mysqli_query(conectar(), $sql);
-                                $datos = mysqli_fetch_array($result);
+                                $conexion = conectar();
+                                $stmt = mysqli_prepare($conexion, "SELECT COUNT(*) as total FROM usuarios WHERE estado = ?");
+                                $estado_activo = 1;
+                                mysqli_stmt_bind_param($stmt, "i", $estado_activo);
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+                                $datos = mysqli_fetch_assoc($result);
                                 echo $datos['total'];
+                                mysqli_stmt_close($stmt);
+                                mysqli_close($conexion);
                             ?>
                         </p>
                     </div>
@@ -52,10 +68,16 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                         <h6 class="card-title">Usuarios Inactivos</h6>
                         <p class="card-text display-6">
                             <?php
-                                $sql = "SELECT COUNT(*) as total FROM usuarios WHERE estado = 0";
-                                $result = mysqli_query(conectar(), $sql);
-                                $datos = mysqli_fetch_array($result);
+                                $conexion = conectar();
+                                $stmt = mysqli_prepare($conexion, "SELECT COUNT(*) as total FROM usuarios WHERE estado = ?");
+                                $estado_inactivo = 0;
+                                mysqli_stmt_bind_param($stmt, "i", $estado_inactivo);
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+                                $datos = mysqli_fetch_assoc($result);
                                 echo $datos['total'];
+                                mysqli_stmt_close($stmt);
+                                mysqli_close($conexion);
                             ?>
                         </p>
                     </div>
@@ -76,15 +98,20 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                 </thead>
                 <tbody>
                 <?php
-                    $sql = "SELECT idperfil, COUNT(id) as cantidad FROM usuarios GROUP BY idperfil";
-                    $result = mysqli_query(conectar(), $sql);
-                    while($datos = mysqli_fetch_array($result)) {
+                    $conexion = conectar();
+                    $stmt = mysqli_prepare($conexion, "SELECT idperfil, COUNT(id) as cantidad FROM usuarios GROUP BY idperfil");
+                    mysqli_stmt_execute($stmt);
+                    $result = mysqli_stmt_get_result($stmt);
+                    while($datos = mysqli_fetch_assoc($result)) {
                 ?>
                     <tr>
                         <td><?php echo nombre_perfil($datos['idperfil']);?></td>
                         <td><?php echo $datos['cantidad'];?></td>
                     </tr>
-                <?php } ?>
+                <?php } 
+                    mysqli_stmt_close($stmt);
+                    mysqli_close($conexion);
+                ?>
                 </tbody>
             </table>
         </div>

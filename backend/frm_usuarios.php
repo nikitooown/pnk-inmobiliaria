@@ -76,7 +76,7 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                     Swal.fire({
                         icon: 'success',
                         title: 'Éxito',
-                        text: data.mensaje,
+                        text: data.message,
                         confirmButtonColor: '#3085d6'
                     }).then(() => {
                         window.location.reload();
@@ -85,7 +85,7 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: data.mensaje,
+                        text: data.message,
                         confirmButtonColor: '#d33'
                     });
                 }
@@ -218,8 +218,10 @@ if ($_SESSION['nombre_perfil'] !== 'Administrador') {
                         </thead>
                         <tbody>
                         <?php
-                            $sql="SELECT * FROM usuarios";
-                            $result=mysqli_query(conectar(),$sql);
+                            $conexion_frm = conectar();
+                            $stmt_frm = mysqli_prepare($conexion_frm, "SELECT * FROM usuarios");
+                            mysqli_stmt_execute($stmt_frm);
+                            $result = mysqli_stmt_get_result($stmt_frm);
                             while($datos=mysqli_fetch_array($result)) {
                         ?>
                             <tr>

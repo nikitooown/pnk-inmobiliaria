@@ -36,6 +36,8 @@
             errorMsg = 'La contraseña ingresada es incorrecta.';
         <?php elseif ($_GET['error'] == 4): ?>
             errorMsg = 'Tu cuenta está inactiva. Contacta al administrador.';
+        <?php elseif ($_GET['error'] == 'timeout'): ?>
+            errorMsg = 'Tu sesión ha expirado por inactividad. Por favor, inicia sesión nuevamente.';
         <?php endif; ?>
         Swal.fire({
             icon: 'error',

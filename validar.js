@@ -290,7 +290,7 @@ function initFormLogin() {
         e.preventDefault();
         limpiarAlertas('alertasLogin');
 
-        const correo = form.querySelector('[name="correo"], [name="email"], "#correo", "#email"');
+        const correo = form.querySelector('[name="correo"], [name="email"], #correo, #email');
         const psw    = form.querySelector('[name="password"]');
         let valido = true;
 
@@ -357,7 +357,7 @@ async function cargarPropiedades() {
 }
 
 function estadoBadge(estado) {
-    const map = { Publicada: 'bg-success', Pendiente: 'bg-warning text-dark', Vendida: 'bg-secondary', Arrendada: 'bg-info text-dark' };
+    const map = { Publicada: 'bg-success', Pendiente: 'bg-warning text-dark', Vendida: 'bg-secondary', Arrendada: 'bg-info text-dark', Inactiva: 'bg-secondary' };
     return map[estado] || 'bg-secondary';
 }
 
@@ -410,8 +410,6 @@ async function abrirEditar(id) {
     document.getElementById('editUf').value           = p.uf ?? '';
     document.getElementById('editHabitaciones').value = p.habitaciones;
     document.getElementById('editBanos').value        = p.banos;
-    document.getElementById('editLatitud').value      = p.latitud || '';
-    document.getElementById('editLongitud').value     = p.longitud || '';
     document.getElementById('editEstado').value       = p.estado;
 
     // Checkboxes de equipamiento
@@ -447,7 +445,8 @@ function initFormCrearPropiedad() {
         
         let valido = true;
 
-        [titulo, tipo, precio, direccion, comuna, sector].forEach(inp => {
+        // Solo validar como obligatorios los campos que realmente lo son
+        [titulo, tipo, precio].forEach(inp => {
             if (inp) {
                 limpiarError(inp);
                 if (!inp.value || !inp.value.trim()) {

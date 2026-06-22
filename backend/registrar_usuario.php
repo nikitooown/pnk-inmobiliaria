@@ -1,6 +1,7 @@
 <?php
 session_start();
 include __DIR__ . "/../config/setup.php";
+include __DIR__ . "/../config/session_config.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rut             = $_POST['rut'];

@@ -1,5 +1,5 @@
 <?php
-session_start();
+// No llamar session_start() aquí porque dashboard.php ya lo inició
 include("config/setup.php");
 
 // Validación: solo Administrador puede acceder

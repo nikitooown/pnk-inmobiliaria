@@ -1,6 +1,8 @@
 <?php
 include("config/setup.php");
 session_start();
+include("config/session_config.php");
+include("config/security_headers.php");
 
 if(isset($_SESSION['usuario_sesion']))
 {
@@ -54,9 +56,9 @@ if(isset($_SESSION['usuario_sesion']))
                     <h2 class="mb-0">Dashboard</h2>
 
                     <div class="user-box d-flex align-items-center gap-3">
-                        <img src="img/<?php echo $_SESSION['foto_sesion'];?>" alt="Usuario" class="user-thumb">
+                        <img src="img/<?php echo htmlspecialchars($_SESSION['foto_sesion'] ?? 'default.png');?>" alt="Usuario" class="user-thumb" onerror="this.src='img/logo.png'">
                         <div>
-                            <strong><?php echo $_SESSION['usuario_sesion'];?></strong><br>
+                            <strong><?php echo htmlspecialchars($_SESSION['usuario_sesion']);?></strong><br>
                             <small class="text-muted"><?php echo $_SESSION['nombre_perfil'];?></small>
                         </div>
                         <?php // Solo el administrador puede editar usuarios ?>
@@ -103,11 +105,16 @@ if(isset($_SESSION['usuario_sesion']))
                                         $inicio = ($pagina - 1) * $por_pagina;
                                         
                                         $conexion = conectar();
-                                        $total_usuarios = mysqli_num_rows(mysqli_query($conexion, "SELECT id FROM usuarios"));
+                                        $stmt_count = mysqli_prepare($conexion, "SELECT COUNT(*) as total FROM usuarios");
+                                        mysqli_stmt_execute($stmt_count);
+                                        $total_usuarios = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_count))['total'];
+                                        mysqli_stmt_close($stmt_count);
                                         $total_paginas = ceil($total_usuarios / $por_pagina);
                                         
-                                        $sql="SELECT * FROM usuarios ORDER BY id ASC LIMIT $inicio, $por_pagina";
-                                        $result=mysqli_query($conexion,$sql);
+                                        $stmt_list = mysqli_prepare($conexion, "SELECT * FROM usuarios ORDER BY id ASC LIMIT ?, ?");
+                                        mysqli_stmt_bind_param($stmt_list, "ii", $inicio, $por_pagina);
+                                        mysqli_stmt_execute($stmt_list);
+                                        $result = mysqli_stmt_get_result($stmt_list);
                                         while($datos=mysqli_fetch_array($result))
                                         {
                                     ?>
@@ -115,7 +122,7 @@ if(isset($_SESSION['usuario_sesion']))
                                             <td><?php echo $datos['id'];?></td>
                                             <td><?php echo htmlspecialchars($datos['nombre']);?></td>
                                             <td><?php echo htmlspecialchars($datos['email']);?></td>
-                                            <td><?php if($datos['estado']=='1'){?>
+                                            <td><?php if((int)$datos['estado']===1){?>
                                                 <span class="badge" style="background-color: #b0a78f; color: #3c3c3c;">Activo</span>
                                                 <?php
                                                 }else{

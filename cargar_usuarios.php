@@ -1,5 +1,5 @@
 <?php
-session_start();
+// No llamar session_start() aquí porque dashboard.php ya lo inició
 include("config/setup.php");
 
 // Validación: solo Administrador puede acceder
@@ -185,7 +185,7 @@ async function enviarAccion(accion, idUsuario = null) {
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
-                text: data.mensaje,
+                text: data.message,
                 confirmButtonColor: '#3085d6'
             }).then(() => {
                 cargarSeccion('usuarios');
@@ -194,7 +194,7 @@ async function enviarAccion(accion, idUsuario = null) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: data.mensaje,
+                text: data.message,
                 confirmButtonColor: '#d33'
             });
         }
