@@ -269,12 +269,12 @@ document.addEventListener("DOMContentLoaded", function() {
       let claveRepeat = form.querySelector("[name='pswd-repeat']");
       let terminos = form.querySelector("[name='terminos']");
 
-      // Validar Rut
+      // Validar Rut (formato básico, el backend valida con algoritmo módulo 11)
       if (rut.value.trim() === "") {
         rut.nextElementSibling.textContent = "Este campo es obligatorio.";
         valido = false;
-      } else if (!/^\d{1,2}\.?\d{3}\.?\d{3}-[0-9Kk]$/.test(rut.value.trim())) {
-        rut.nextElementSibling.textContent = "Rut inválido (ejemplo: 12345678-9).";
+      } else if (!/^[\d]{1,2}[\.]?[\d]{3}[\.]?[\d]{3}[-][\dkK]$/.test(rut.value.trim())) {
+        rut.nextElementSibling.textContent = "Rut inválido. Formato: 12.345.678-9 o 12345678-9";
         valido = false;
       }
 
