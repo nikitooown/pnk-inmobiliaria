@@ -241,6 +241,7 @@
 
   <div class="detalle-header">
     <div class="container text-center">
+      <p class="text-muted small mb-1">Cód: C<?= str_pad($propiedad['id'], 6, '0', STR_PAD_LEFT) ?></p>
       <h1><?= htmlspecialchars($propiedad['titulo']) ?></h1>
       <p class="detalle-ubicacion" style="justify-content:center;">
         <i class="bi bi-geo-alt-fill"></i>
@@ -332,6 +333,11 @@
         <p class="precio-uf">UF <?= $uf_formateado ?></p>
       <?php endif; ?>
 
+      <!-- Fecha de publicación -->
+      <?php if (!empty($propiedad['fecha_creacion'])): ?>
+        <p><strong>Fecha de publicación:</strong> <?= date('d-m-Y', strtotime($propiedad['fecha_creacion'])) ?></p>
+      <?php endif; ?>
+
       <!-- Descripción -->
       <?php if (!empty($propiedad['descripcion'])): ?>
         <div class="descripcion">
@@ -363,6 +369,21 @@
       <div>
         <button class="btn-visita" onclick="solicitarVisita(<?= (int) $propiedad['id'] ?>)">📅 Solicitar una Visita</button>
         <a href="catalogo.php" class="btn-volver">← Volver al catálogo</a>
+      </div>
+
+      <!-- Compartir en redes sociales -->
+      <?php
+      $url_actual = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+      $texto_compartir = urlencode("Mira esta propiedad: " . $propiedad['titulo']);
+      $url_compartir = urlencode($url_actual);
+      ?>
+      <div class="mt-3">
+        <a href="https://wa.me/?text=<?= $texto_compartir ?>%20<?= $url_compartir ?>" target="_blank" class="btn btn-success btn-sm">
+          <i class="bi bi-whatsapp"></i> Compartir por WhatsApp
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $url_compartir ?>" target="_blank" class="btn btn-primary btn-sm">
+          <i class="bi bi-facebook"></i> Compartir en Facebook
+        </a>
       </div>
     </div>
 

@@ -124,6 +124,7 @@
             <img src="<?= htmlspecialchars($foto) ?>" alt="<?= htmlspecialchars($row['titulo']) ?>">
           </div>
           <div class="texto-propiedad">
+            <p class="text-muted small mb-1">Cód: C<?= str_pad($row['id'], 6, '0', STR_PAD_LEFT) ?></p>
             <h3><?= htmlspecialchars($row['titulo']) ?></h3>
             <p class="ubicacion">📍 <?= htmlspecialchars($row['sector'] ? $row['sector'] . ', ' : '') ?><?= htmlspecialchars($row['comuna']) ?></p>
             <p class="precio-destacado">$<?= $precio_formateado ?></p>

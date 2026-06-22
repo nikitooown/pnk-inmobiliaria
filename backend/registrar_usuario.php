@@ -12,11 +12,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email           = $_POST['email'];
     $clave           = $_POST['pswd'];
 
+    $numero_bienes_raices = $_POST['numero_bienes_raices'] ?? NULL;
+    if ($numero_bienes_raices !== NULL) {
+        $numero_bienes_raices = trim($numero_bienes_raices);
+        if ($numero_bienes_raices === '') {
+            $numero_bienes_raices = NULL;
+        }
+    }
+
     // Detectar qué formulario se envió
     if (isset($_POST['registrar_propietario'])) {
         $idperfil = 2; // Propietario
         $certificado = NULL;
     } elseif (isset($_POST['registrar_gestor'])) {
+        $numero_bienes_raices = NULL; // No corresponde a gestor
         $idperfil = 3; // Gestor Inmobiliario
         
         // Manejo de certificado para Gestores
@@ -94,13 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insertar usuario como inactivo usando prepared statement
     $sql = "INSERT INTO usuarios 
-            (rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave, estado, fecha_hora, foto, idperfil, certificado) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'default.png', ?, ?)";
+            (rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave, estado, fecha_hora, foto, idperfil, certificado, numero_bienes_raices) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'default.png', ?, ?, ?)";
 
     $stmt = mysqli_prepare($conexion, $sql);
     // Tipos: s=string, i=int
-    // 11 placeholders: rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave_hash, estado, idperfil, certificado
-    mysqli_stmt_bind_param($stmt, "ssssssssiis", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado);
+    // 12 placeholders: rut, nombre, apellido, fecha_nacimiento, genero, telefono, email, clave_hash, estado, idperfil, certificado, numero_bienes_raices
+    mysqli_stmt_bind_param($stmt, "ssssssssiiss", $rut, $nombre, $apellido, $fecha_nacimiento, $genero, $telefono, $email, $clave_hash, $estado, $idperfil, $certificado, $numero_bienes_raices);
 
     try {
         mysqli_stmt_execute($stmt);

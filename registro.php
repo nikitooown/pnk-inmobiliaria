@@ -123,6 +123,11 @@
     <input type="text" placeholder="Ingrese su email" name="email" required>
     <span class="error-msg" style="color:red; font-size:0.9em;"></span>
 
+    <div class="mb-3">
+        <label for="numero_bienes_raices" class="form-label">N° de propiedad según registro de Bienes Raíces</label>
+        <input type="text" class="form-control" id="numero_bienes_raices" name="numero_bienes_raices">
+    </div>
+
     <label for="pswd"><b>Contraseña</b></label>
     <input type="password" placeholder="Ingrese su contraseña" name="pswd" required>
     <span class="error-msg" style="color:red; font-size:0.9em;"></span>

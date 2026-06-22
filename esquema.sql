@@ -19,7 +19,8 @@ CREATE TABLE usuarios (
     fecha_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     foto VARCHAR(255) DEFAULT 'default.png',
     idperfil INT NOT NULL DEFAULT 2,
-    certificado VARCHAR(500) DEFAULT NULL
+    certificado VARCHAR(500) DEFAULT NULL,
+    numero_bienes_raices VARCHAR(50) DEFAULT NULL
 );
 
 -- Tabla: propiedades
@@ -86,6 +87,9 @@ CREATE TABLE IF NOT EXISTS visitas (
     telefono VARCHAR(20),
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Migración para bases de datos existentes
+ALTER TABLE usuarios ADD COLUMN IF NOT EXISTS numero_bienes_raices VARCHAR(50) DEFAULT NULL;
 
 -- ============================================
 -- DATOS SEMILLA (Seed data)

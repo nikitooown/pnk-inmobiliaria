@@ -598,3 +598,13 @@ form input[type="checkbox"] {
     width: 100%;
   }
 }
+
+#formCrearPropiedad,
+#formEditarPropiedad {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}

@@ -22,7 +22,7 @@ if (empty($nombre) || empty($telefono)) {
 }
 
 // Validar formato de teléfono chileno
-$telefonoLimpio = preg_replace('/\s+/g', '', $telefono);
+$telefonoLimpio = preg_replace('/\s+/', '', $telefono);
 if (!preg_match('/^\+?56?9\d{8}$/', $telefonoLimpio)) {
     echo json_encode(['success' => false, 'message' => 'Formato de teléfono inválido. Use: +569XXXXXXXX']);
     exit();

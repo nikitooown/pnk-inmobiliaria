@@ -68,11 +68,27 @@
 
         <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
             ¿No tienes cuenta? <a href="registro.php" style="color: #b0a78f; text-decoration: none;">Regístrate aquí</a><br>
-            <a href="#" style="color: #b0a78f; text-decoration: none;">¿Olvidaste tu contraseña?</a>
+            <a href="#" id="link-olvide-password" style="color: #b0a78f; text-decoration: none;">¿Olvidaste tu contraseña?</a>
         </div>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var link = document.getElementById('link-olvide-password');
+        if (link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Recuperación de contraseña',
+                    text: 'Por ahora, contacta al administrador del sistema para restablecer tu contraseña.',
+                });
+            });
+        }
+    });
+    </script>
 
 <footer class="bg-pnk text-center py-4 mt-5 border-top">
   <p class="mb-0" style="color:#3c3c3c;">© 2026 PNK Inmobiliaria - Todos los derechos reservados</p>
