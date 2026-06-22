@@ -415,13 +415,13 @@ async function abrirEditar(id) {
     document.getElementById('editEstado').value       = p.estado;
 
     // Checkboxes de equipamiento
-    document.getElementById('editBodega')?.checked       = !!p.bodega;
-    document.getElementById('editEstacionamiento')?.checked = !!p.estacionamiento;
-    document.getElementById('editLogia')?.checked        = !!p.logia;
-    document.getElementById('editCocinaAmoblada')?.checked = !!p.cocina_amoblada;
-    document.getElementById('editAntejardin')?.checked   = !!p.antejardin;
-    document.getElementById('editPatioTrasero')?.checked = !!p.patio_trasero;
-    document.getElementById('editPiscina')?.checked      = !!p.piscina;
+    document.getElementById('editBodega').checked           = !!p.bodega;
+    document.getElementById('editEstacionamiento').checked  = !!p.estacionamiento;
+    document.getElementById('editLogia').checked            = !!p.logia;
+    document.getElementById('editCocinaAmoblada').checked   = !!p.cocina_amoblada;
+    document.getElementById('editAntejardin').checked       = !!p.antejardin;
+    document.getElementById('editPatioTrasero').checked     = !!p.patio_trasero;
+    document.getElementById('editPiscina').checked          = !!p.piscina;
 
     const modal = new bootstrap.Modal(document.getElementById('modalEditar'));
     modal.show();
